@@ -43,7 +43,7 @@ class DoublyLinkedList: public List<T>{
     ~DoublyLinkedList();
     void insertFront(T* d);
     void insertBack(T* d);
-    T* removeFront(); 
+    T* removeFront();
     T* removeBack();
     T* deletePos(int pos);
     T* removeNode(T* key);
@@ -53,6 +53,7 @@ class DoublyLinkedList: public List<T>{
     int find(T* value);
     T* getAllValues();
     T* getNode(int index);
+    string returnList();
 
   private:
     ListNode<T> *front;
@@ -281,4 +282,20 @@ T* DoublyLinkedList<T>::removeNode(T* key){
 
   return temp;
 
+}
+
+template <class T>
+string DoublyLinkedList<T>::returnList(){
+  ListNode<T> *curr = front;
+  string tester = "\n";
+
+  while(curr != NULL){
+    tester += to_string(curr->data);
+    curr = curr->next;
+
+    if(curr != NULL){
+      tester += " ";
+    }
+  }
+  return tester;
 }
