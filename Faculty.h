@@ -1,5 +1,5 @@
 #include <iostream>
-#include "DoublyLinkedList.cpp"
+#include "DoublyLinkedList.h"
 using namespace std;
 
 class Faculty{
