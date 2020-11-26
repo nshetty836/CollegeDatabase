@@ -1,3 +1,5 @@
+#ifndef STUDENT_H
+#define STUDENT_H
 #include <iostream>
 using namespace std;
 
@@ -22,7 +24,32 @@ class Student{
 
       void getInformantion();
       string getFile();
+      string toString();
 
       int getID();
       int returnID();
+      friend ostream& operator<<(ostream& os, Student& s)
+      {
+        os << s.toString();
+        return os;
+      }
+
+      friend bool operator<(const Student& s1, const Student& s2)
+      {
+        if(s1.id < s2.id)
+          return true;
+        else
+          return false;
+      }
+
+      friend bool operator==(const Student& s1, const Student& s2)
+      {
+        if(s1.id == s2.id)
+          return true;
+        else
+          return false;
+      }
 };
+
+
+#endif
