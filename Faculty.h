@@ -17,7 +17,7 @@ class Faculty{
       string name;
       string level;
       string department;
-      DoublyLinkedList<int> *adviseeID;
+      DoublyLinkedList<int> *advisees;
 
       void getInformantion();
       string getFile();
@@ -27,9 +27,9 @@ class Faculty{
       // returning advisee table
       DoublyLinkedList<int>* getAdvisees();
       // deleting at specific position
-      int setAdvisees(int position);
+      int* setAdvisees(int position);
       //adding to advisee list
-      void addAdvisee(int adviseeID);
+      void addAdvisee(int* adviseeID);
       // id# of faculty advisee being printed
       void printAdvisees();
 };

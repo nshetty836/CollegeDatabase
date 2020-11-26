@@ -1,7 +1,6 @@
 using namespace std;
 #include <iostream>
 #include <cstddef>
-#include "List.h"
 
 //List node used to implement the Doubly linked list
 template <class T>
@@ -36,7 +35,7 @@ ListNode<T>::~ListNode(){
 }
 
 template <class T>
-class DoublyLinkedList: public List<T>{
+class DoublyLinkedList{
 //single linked List
   public:
     DoublyLinkedList();
@@ -154,7 +153,7 @@ void DoublyLinkedList<T>::printList(){
   ListNode<T> *curr = front;
 
   while(curr != NULL){
-    cout << curr -> data->toString() << endl; //printing out data in current pointer
+    cout << curr -> data << endl; //printing out data in current pointer
     curr = curr -> next;
   }
 }
@@ -286,16 +285,16 @@ T* DoublyLinkedList<T>::removeNode(T* key){
 
 template <class T>
 string DoublyLinkedList<T>::returnList(){
-  ListNode<T> *curr = front;
-  string tester = "\n";
+  ListNode<T> *curr = front;
+  string tester = "\n";
 
-  while(curr != NULL){
-    tester += to_string(curr->data);
-    curr = curr->next;
+  while(curr != NULL){
+    tester += to_string(*curr->data);
+    curr = curr->next;
 
-    if(curr != NULL){
-      tester += " ";
-    }
-  }
-  return tester;
+    if(curr != NULL){
+      tester += " ";
+    }
+  }
+  return tester;
 }

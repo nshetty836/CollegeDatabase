@@ -19,7 +19,6 @@ Faculty::Faculty(int i, string n, string l, string d, int adviseeID){
   level = l;
   department = d;
   advisees = new DoublyLinkedList<int>();
-  advisees->insertBack(adviseeID);
 }
 
 //overloaded constructor
@@ -40,11 +39,11 @@ DoublyLinkedList<int>* Faculty::getAdvisees(){
   return advisees;
 }
 
-void Faculty::addAdvisee(int adviseeID){
+void Faculty::addAdvisee(int* adviseeID){
   advisees->insertBack(adviseeID);
 }
 
-int Faculty::setAdvisees(int position){
+int* Faculty::setAdvisees(int position){
   return advisees->deletePos(position);
 }
 
