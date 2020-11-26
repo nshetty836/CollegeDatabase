@@ -1,4 +1,4 @@
-//header file GenStack.h
+//header file Stack.h
 #include <iostream>
 #include <string.h>
 using namespace std;
