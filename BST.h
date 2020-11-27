@@ -340,4 +340,31 @@ bool BST<T>::isEmpty(){
   else
     return false;
 }
+
+template <class T>
+T* BST<T>::searchTree(int value){
+  if(root == NULL){
+    cout << "The tree is empty." << endl;
+  }
+  else{
+    TreeNode<T> *current = root;
+    while(current->key != value){
+      if(value < current->key){
+        current = current->left;
+      }
+      else{
+        current = current->right;
+      }
+      if(current == NULL){ 
+        cout << endl;
+        return NULL;
+      }
+    }
+    return current->data;
+  }
+}
+
+
+
+
 #endif
