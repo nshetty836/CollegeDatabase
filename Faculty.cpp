@@ -73,3 +73,14 @@ string Faculty::getFile(){
 void Faculty::printAdvisees(){
   advisees->printList();
 }
+
+string Faculty::toString(){
+  string temp = "";
+  temp += "ID: " + to_string(id);
+  temp += "\nName: " + name;
+  temp += "\nLevel: " + level;
+  temp += "\nDepartment: " + department;
+  temp += "\nAdvisees: \n";
+  temp += advisees->returnList();
+  return temp;
+}

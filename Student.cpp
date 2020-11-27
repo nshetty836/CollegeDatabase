@@ -55,6 +55,17 @@ string Student::getFile(){
   return tester;
 }
 
+string Student::toString(){
+  string temp = "";
+  temp += "ID: " + to_string(id);
+  temp += "\nName: " + name;
+  temp += "\nLevel: " + level;
+  temp += "\nMajor: " + major;
+  temp += "\nGPA: " + to_string(gpa);
+  temp += "\nAdvisor: " + to_string(facultyAdvisor) + "\n";
+  return temp;
+}
+
 void Student::facAdvisor(int fa){
   facultyAdvisor = fa;
 }

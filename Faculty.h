@@ -1,3 +1,5 @@
+#ifndef FACULTY_H
+#define FACULTY_H
 #include <iostream>
 #include "DoublyLinkedList.h"
 using namespace std;
@@ -32,4 +34,28 @@ class Faculty{
       void addAdvisee(int* adviseeID);
       // id# of faculty advisee being printed
       void printAdvisees();
+      string toString();
+
+      friend ostream& operator<<(ostream& os, Faculty& f)
+      {
+        os << f.toString();
+        return os;
+      }
+
+      friend bool operator<(const Faculty& f1, const Faculty& f2)
+      {
+        if(f1.id < f2.id)
+          return true;
+        else
+          return false;
+      }
+
+      friend bool operator==(const Faculty& f1, const Faculty& f2)
+      {
+        if(f1.id == f2.id)
+          return true;
+        else
+          return false;
+      }
 };
+#endif
