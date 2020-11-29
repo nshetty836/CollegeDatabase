@@ -18,8 +18,8 @@ string Person::getLevel(){
 }
 
 int Person::getID(){
-  return idNum;
+  return id;
 }
 void Person::setID(int i){
-  idNum = idNum;
+  id = i;
 }
