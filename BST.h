@@ -49,6 +49,7 @@ public:
   void insert(T value);
   bool contains(T value);
   bool deleter(T value);
+  T* find(T value);
   void destroyRecursive(TreeNode<T>* node);
 
   bool isEmpty();
@@ -205,6 +206,27 @@ bool BST<T>::contains(T value){
     }
   }
   return true; // found the value
+}
+
+template <class T>
+T* BST<T>::find(T value){
+  if(isEmpty())
+    return NULL;
+  else{
+    //tree is not empty, let's go look for the value
+    TreeNode<T> *current = root;
+
+    while(current->key != value){
+      if(value < current->key)
+        current = current->left;
+      else
+        current = current->right;
+
+      if(current == NULL)      //did not find the value
+        return NULL;
+    }
+    return &(current->key); // found the value
+  }
 }
 
 template <class T>

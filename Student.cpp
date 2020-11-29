@@ -23,6 +23,10 @@ Student::Student(int i, string n, string l, string m, double g, int f){
   facultyAdvisor = f;
 }
 
+Student::Student(int i){
+  id = i;
+}
+
 //destructor
 Student::~Student(){
 }
@@ -36,11 +40,11 @@ void Student::getInformantion(){
   cout << "Faculty Advisor ID: " << facultyAdvisor;
 }
 
-int Student::returnID(){
+int Student::getID(){
   return id;
 }
 
-int Student::getID(){
+int Student::getAdvisor(){
   return facultyAdvisor;
 }
 

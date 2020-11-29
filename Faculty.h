@@ -9,9 +9,8 @@ class Faculty{
       //default constructor
       Faculty();
       //overloaded constructor
-      Faculty(int i, string n, string l, string d, int adviseeID);
-      //overloaded constructor
-      Faculty(int i, string n, string l, string d, DoublyLinkedList<int> *adviseeID);
+      Faculty(int i, string n, string l, string d);
+      Faculty(int i);
       //destructor
       ~Faculty();
 
@@ -19,19 +18,19 @@ class Faculty{
       string name;
       string level;
       string department;
-      DoublyLinkedList<int> *advisees;
+      DoublyLinkedList<int> advisees;
 
-      void getInformantion();
+      void getInformation();
       string getFile();
       int getID();
-
+      bool hasAdvisee();
 
       // returning advisee table
-      DoublyLinkedList<int>* getAdvisees();
+      // DoublyLinkedList<int>* getAdvisees();
       // deleting at specific position
       int* setAdvisees(int position);
       //adding to advisee list
-      void addAdvisee(int* adviseeID);
+      void addAdvisee(int adviseeID);
       // id# of faculty advisee being printed
       void printAdvisees();
       string toString();
@@ -53,6 +52,14 @@ class Faculty{
       friend bool operator==(const Faculty& f1, const Faculty& f2)
       {
         if(f1.id == f2.id)
+          return true;
+        else
+          return false;
+      }
+
+      friend bool operator!=(const Faculty& f1, const Faculty& f2)
+      {
+        if(f1.id != f2.id)
           return true;
         else
           return false;

@@ -19,7 +19,7 @@ class Database{
     void findStudent(int studID); //#3
     void findFaculty(int facID);  //#4
     void findAdvisor(int studID);   //#5
-    void findAdvisee(int facID);   //#6
+    void findAdvisees(int facID);   //#6
     void addStudent(int studID);   //#6
     void deleteStudent(int studID);   //#6
     void addFaculty(int facID);   //#6

@@ -9,6 +9,7 @@ class Student{
       Student();
       //overloaded constructor
       Student(int i, string n, string l, string m, double g, int f);
+      Student(int i);
       //destructor
       ~Student();
 
@@ -27,7 +28,7 @@ class Student{
       string toString();
 
       int getID();
-      int returnID();
+      int getAdvisor();
       friend ostream& operator<<(ostream& os, Student& s)
       {
         os << s.toString();
@@ -45,6 +46,14 @@ class Student{
       friend bool operator==(const Student& s1, const Student& s2)
       {
         if(s1.id == s2.id)
+          return true;
+        else
+          return false;
+      }
+
+      friend bool operator!=(const Student& s1, const Student& s2)
+      {
+        if(s1.id != s2.id)
           return true;
         else
           return false;

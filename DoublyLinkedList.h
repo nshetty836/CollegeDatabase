@@ -1,3 +1,5 @@
+#ifndef DOUBLYLINKEDLIST_H
+#define DOUBLYLINKEDLIST_H
 using namespace std;
 #include <iostream>
 #include <cstddef>
@@ -53,11 +55,12 @@ class DoublyLinkedList{
     T* getAllValues();
     T* getNode(int index);
     string returnList();
+    int size;
+
 
   private:
     ListNode<T> *front;
     ListNode<T> *back;
-    int size;
 
 };
 
@@ -153,7 +156,7 @@ void DoublyLinkedList<T>::printList(){
   ListNode<T> *curr = front;
 
   while(curr != NULL){
-    cout << curr -> data << endl; //printing out data in current pointer
+    cout << *curr -> data << endl; //printing out data in current pointer
     curr = curr -> next;
   }
 }
@@ -290,6 +293,7 @@ string DoublyLinkedList<T>::returnList(){
 
   while(curr != NULL){
     tester += to_string(*curr->data);
+    cout << "tester: " << tester << endl;
     curr = curr->next;
 
     if(curr != NULL){
@@ -298,3 +302,4 @@ string DoublyLinkedList<T>::returnList(){
   }
   return tester;
 }
+#endif

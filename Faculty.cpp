@@ -9,51 +9,44 @@ Faculty::Faculty(){
   name = " ";
   level = " ";
   department = " ";
-  advisees = new DoublyLinkedList<int>();
 }
 
 //overloaded constructor
-Faculty::Faculty(int i, string n, string l, string d, int adviseeID){
+Faculty::Faculty(int i, string n, string l, string d){
   id = i;
   name = n;
   level = l;
   department = d;
-  advisees = new DoublyLinkedList<int>();
 }
 
-//overloaded constructor
-Faculty::Faculty(int i, string n, string l, string d, DoublyLinkedList<int> *adviseeID){
+Faculty::Faculty(int i){
   id = i;
-  name = n;
-  level = l;
-  department = d;
-  advisees = adviseeID;
 }
 
 //destructor
 Faculty::~Faculty(){
-  delete advisees;
+  // delete advisees;
 }
 
-DoublyLinkedList<int>* Faculty::getAdvisees(){
-  return advisees;
-}
+// DoublyLinkedList<int> Faculty::getAdvisees(){
+//   return advisees;
+// }
 
-void Faculty::addAdvisee(int* adviseeID){
-  advisees->insertBack(adviseeID);
+void Faculty::addAdvisee(int adviseeID){
+  advisees.insertFront(&adviseeID);
 }
 
 int* Faculty::setAdvisees(int position){
-  return advisees->deletePos(position);
+  return advisees.deletePos(position);
 }
 
-void Faculty::getInformantion(){
+void Faculty::getInformation(){
   cout << "ID: " << id;
   cout << "Name: " << name;
   cout << "Level: " << level;
   cout << "Department: " << department;
   cout << "Advisees ID: " << endl;
-  advisees->printList();
+  advisees.printList();
 }
 
 int Faculty::getID(){
@@ -66,13 +59,21 @@ string Faculty::getFile(){
   tester += name;
   tester += level;
   tester += department;
-  tester += advisees->returnList();
+  tester += advisees.returnList();
   return tester;
 }
 
 void Faculty::printAdvisees(){
-  advisees->printList();
+  advisees.printList();
 }
+
+bool Faculty::hasAdvisee(){
+  if(advisees.size == 0)
+    return false;
+  else
+    return true;
+}
+
 
 string Faculty::toString(){
   string temp = "";
@@ -81,6 +82,6 @@ string Faculty::toString(){
   temp += "\nLevel: " + level;
   temp += "\nDepartment: " + department;
   temp += "\nAdvisees: \n";
-  temp += advisees->returnList();
+  temp += advisees.returnList();
   return temp;
 }
