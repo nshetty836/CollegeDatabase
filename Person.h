@@ -15,6 +15,6 @@ public:
   string getLevel();
 
   int getID();
-  int setID(int i)
+  void setID(int i);
 
-}
+};

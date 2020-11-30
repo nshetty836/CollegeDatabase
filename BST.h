@@ -9,10 +9,11 @@ class TreeNode{
 
   public:
     TreeNode();
-    TreeNode(T key);
+    TreeNode(int key, T data);
     virtual ~TreeNode();
 
-    T key;
+    int key;
+    T data;
     TreeNode<T>* left;
     TreeNode<T>* right;
 };
@@ -24,10 +25,11 @@ TreeNode<T>:: TreeNode(){
 }
 
 template <class T>
-TreeNode<T>::TreeNode(T k){
+TreeNode<T>::TreeNode(int k, T d){
   left = NULL;
   right = NULL;
   key = k;
+  data = d;
 }
 
 template <class T>
@@ -44,12 +46,12 @@ private:
 
 public:
   BST();
-  virtual ~BST();
+  ~BST();
 
-  void insert(T value);
-  bool contains(T value);
-  bool deleter(T value);
-  T* find(T value);
+  void insert(int value, T k);
+  bool contains(int value);
+  bool deleter(int value);
+  T* find(int k);
   void destroyRecursive(TreeNode<T>* node);
 
   bool isEmpty();
@@ -57,9 +59,7 @@ public:
   T* getMin();
   void recPrint(TreeNode<T> *node); //recursive print, takes a node so we can print any part of the tree
   void printTree();
-  void multNodes(int n);
-  void multNodes(TreeNode<T>* node, int n);
-  T nearestAncestor(T a, T b);
+
 
   //returns the sucessor of the node to be deleted, d
   TreeNode<T>* getSuccessor(TreeNode<T> *d);
@@ -92,7 +92,7 @@ void BST<T>::recPrint(TreeNode<T> *node){
     return;
 
   recPrint(node->left);
-  cout << node->key << endl;
+  cout << node->data << endl;
   recPrint(node->right);
 }
 
@@ -101,26 +101,6 @@ template <class T>
 void BST<T>::printTree(){
   recPrint(root);
 }
-
-template <class T>
-void BST<T>::multNodes(int n){
-  multNodes(root, n);
-}
-
-template <class T>
-void BST<T>::multNodes(TreeNode<T>* node, int n){
-  if(node == NULL) return;
-  node->key *= n;
-  if(node->left != NULL){
-    node->left->key *= n;
-    multNodes(node->left, n);
-  }
-  if (node->right!=NULL){
-    node->right->key *= n;
-    multNode(node->right, n);
-  }
-}
-
 
 template <class T>
 T* BST<T>::getMax(){
@@ -151,8 +131,8 @@ T* BST<T>::getMin(){
 }
 
 template <class T>
-void BST<T>::insert(T value){
-  TreeNode<T> *newNode = new TreeNode<T>(value);
+void BST<T>::insert(int value, T k){
+  TreeNode<T> *newNode = new TreeNode<T>(value, k);
 
   // check if tree is empty, make node root if so
   if(isEmpty())
@@ -188,7 +168,7 @@ void BST<T>::insert(T value){
 }
 
 template <class T>
-bool BST<T>::contains(T value){
+bool BST<T>::contains(int value){
   if(isEmpty())
     return false;
   else{
@@ -209,7 +189,7 @@ bool BST<T>::contains(T value){
 }
 
 template <class T>
-T* BST<T>::find(T value){
+T* BST<T>::find(int value){
   if(isEmpty())
     return NULL;
   else{
@@ -225,32 +205,12 @@ T* BST<T>::find(T value){
       if(current == NULL)      //did not find the value
         return NULL;
     }
-    return &(current->key); // found the value
+    return &(current->data); // found the value
   }
 }
 
 template <class T>
-T BST<T>::nearestAncestor(T a, T b){
-  if((root == NULL) || (root->key == a) || (root->key == b))
-    return -1;
-  TreeNode<T>* current = root;
-  TreeNode<T>* parent = NULL;
-
-  while(true){
-    if(a < current->key && b < current->key)
-      current = current->left;
-    else if(a > current->key && b > current->key)
-      current = current->right;
-    else if(a == current->key || b == current->key)
-      return parent->key;
-    else
-      return current->key;
-    parent = current;
-  }
-}
-
-template <class T>
-bool BST<T>::deleter(T k){
+bool BST<T>::deleter(int k){
   if(isEmpty())
     return false;
 
@@ -304,7 +264,7 @@ bool BST<T>::deleter(T k){
       parent->right = current->left;
   }
 
-  else if(current->left ==NULL){
+  else if(current->left == NULL){
     //node has right child, no left children
     if(current == root)
       root = current->right;
@@ -361,29 +321,6 @@ bool BST<T>::isEmpty(){
     return true;
   else
     return false;
-}
-
-template <class T>
-T* BST<T>::searchTree(int value){
-  if(root == NULL){
-    cout << "The tree is empty." << endl;
-  }
-  else{
-    TreeNode<T> *current = root;
-    while(current->key != value){
-      if(value < current->key){
-        current = current->left;
-      }
-      else{
-        current = current->right;
-      }
-      if(current == NULL){ 
-        cout << endl;
-        return NULL;
-      }
-    }
-    return current->data;
-  }
 }
 
 
