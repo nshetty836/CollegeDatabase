@@ -2,29 +2,28 @@
 #include "DoublyLinkedList.h"
 
 Database::Database(){
-  Student* s1 = new Student(1, "Nikita Shetty", "Sophomore", "Data", 3.97, 4);
-  Student* s2 = new Student(2, "Rachna Shetty", "Sophomore", "Data", 3.97, 4);
-  Student* s3 = new Student(3, "Suraj Shetty", "Sophomore", "Data", 3.97, 6);
-
-  masterStudent.insert(1, *s1);
-  masterStudent.insert(2, *s2);
-  masterStudent.insert(3, *s3);
-
-  Faculty* f1 = new Faculty(4, "Kashish Pandey", "Sophomore", "hello");
-  Faculty* f2 = new Faculty(5, "Rachna Shetty", "Sophomore", "wassup");
-  Faculty* f3 = new Faculty(6, "Suraj Shetty", "Sophomore", "hiii");
+  // Student* s1 = new Student(1, "Nikita Shetty", "Sophomore", "Data", 3.97, 4);
+  // Student* s2 = new Student(2, "Rachna Shetty", "Sophomore", "Data", 3.97, 4);
+  // Student* s3 = new Student(3, "Suraj Shetty", "Sophomore", "Data", 3.97, 6);
   //
-  f1->addAdvisee(1);
-  f1->addAdvisee(2);
-  f3->addAdvisee(3);
-
-  // f1->advisees.printList();
-  masterFaculty.insert(4, *f1);
-  // masterFaculty.printTree();
-  masterFaculty.insert(5, *f2);
-  masterFaculty.insert(6, *f3);
-  studFile = new FileProcessor("masterStudent.txt");
-  facFile = new FileProcessor("masterFaculty.txt");
+  // masterStudent.insert(1, *s1);
+  // masterStudent.insert(2, *s2);
+  // masterStudent.insert(3, *s3);
+  //
+  // Faculty* f1 = new Faculty(4, "Kashish Pandey", "Sophomore", "hello");
+  // Faculty* f2 = new Faculty(5, "Rachna Shetty", "Sophomore", "wassup");
+  // Faculty* f3 = new Faculty(6, "Suraj Shetty", "Sophomore", "hiii");
+  // //
+  // f1->addAdvisee(1);
+  // f1->addAdvisee(2);
+  // f3->addAdvisee(3);
+  //
+  // // f1->advisees.printList();
+  // masterFaculty.insert(4, *f1);
+  // // masterFaculty.printTree();
+  // masterFaculty.insert(5, *f2);
+  // masterFaculty.insert(6, *f3);
+  //
 
 
 }
@@ -33,59 +32,171 @@ Database::~Database(){}
 void Database::recoverDatabase(){
   int id, gpa, advisor;
   string name, level, department, major;
-  int lineType = 1, line = 1, numLines;
-  Faculty *f;
-  if(facFile->checkFile()){
-    numLines = facFile->getNumOfLines();
-    while(line < numLines){
-      switch(lineType){
-        case(1):
-          name = facFile->readLine(line);
-          lineType++;
-          line++;
-          break;
-        case(2):
-          try{
-            id = stoi(facFile->readLine(line));
-            lineType++;
-            line++;
-          }
-          catch (exception e)
-          {
-            cout << "\nError in text file.\n" << endl;
-            line = numLines;
-          }
-          break;
-        // case(3):
-        //   try{
-        //     id = stoi(facFile->readLine(line));
-        //     lineType++;
-        //     line++;
-        //   }
-        //   catch (exception e)
-        //   {
-        //     cout << "\nError in text file.\n" << endl;
-        //     line = numLines;
-        //   }
-        //   break;
+  ifstream facultyStream;
+  facultyStream.open("facultyTable.txt");
+  bool noFaculty = false; //flag will be set if error encountered
 
+  if(facultyStream.is_open()) {
+    string fileIn = "";
+    try {
+      while(getline(facultyStream, fileIn)) { //get the name first
+        if(fileIn == ""){
+          break;
+        }
+        name = fileIn;
+        getline(facultyStream, fileIn); //get the ID num
+        id = stoi(fileIn);
+        getline(facultyStream, fileIn); //get the level
+        level = fileIn;
+        getline(facultyStream, fileIn); //get the department
+        department = fileIn;
+        getline(facultyStream, fileIn); //get the number of advisees
+        int numAdv = stoi(fileIn);
+
+        //ADD THE NEW FACULTY MEMBER TO THE TABLE
+        Faculty *newFac = new Faculty(id, name, level, department);
+        // cout << *newFac << endl;
+
+        cout << "NUM: " << numAdv << endl;
+        for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
+          getline(facultyStream, fileIn);
+          int tempSID = stoi(fileIn);
+          newFac->addAdvisee(tempSID);
+        }
+        cout << *newFac << endl;
+
+        masterFaculty.insert(id, *newFac);
+        noFaculty = false;
       }
     }
-    // for(int i = 0; i < facFile->getNumOfLines(); i++){
-    //   facFile.readLine(i);
-    //   f = new Faculty(id, name, level, department)
-    //   if(facFile.readLine(i) != "----" && isAdvisee == true){
-    //     f.addAdvisee(stoi(facFile.readLine(i)));
-    //   }
-    //   masterFaculty.insert();
-    // }
-  }
-  if(studFile->checkFile()){
-    for(int i = 0; i < studFile->getNumOfLines(); i++){
+    catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
+      cout << "Tried to read past EOF" << endl;
+      noFaculty = true;
+    }
+    catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
+      cout << "Error reading from file." << endl;
+      noFaculty = true;
+    }
 
+    facultyStream.close();
+  }
+  else {
+    cout << "facultyTable does not exist." << endl;
+    noFaculty = true;
+  }
+
+  // Faculty Table end //
+
+  // Student Table begin //
+  ifstream studentStream;
+  studentStream.open("studentTable.txt");
+  bool noStudent = true;
+
+  if(studentStream.is_open()) {
+    string fileString = "";
+    try {
+      while(getline(studentStream, fileString)) { //get the name first
+        if(fileString == ""){
+          break;
+        }
+        Student newStu;
+
+        newStu.name = fileString;
+        getline(studentStream, fileString); //get the ID number
+        newStu.id = stoi(fileString);
+        getline(studentStream, fileString); //get the level
+        newStu.level = fileString;
+        getline(studentStream, fileString); //get the Major
+        newStu.major = fileString;
+        getline(studentStream, fileString); //get the gpa and cast to double.
+        newStu.gpa = stod(fileString);
+        getline(studentStream, fileString); //get the advisor ID
+        newStu.facultyAdvisor = stoi(fileString);
+
+        //ADD THE NEW STUDENT TO THE TABLE
+        masterStudent.insert(newStu.id, newStu);
+        noStudent = false;
+      }
+    }
+    catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
+      cout << "Tried to read past EOF" << endl;
+      noStudent = true;
+    }
+    catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
+      cout << "Error reading from file." << endl;
+      noStudent = true;
     }
   }
+  else {
+    cout << "studentTable does not exist." << endl;
+    noStudent = true;
+  }
+
+  // Student Table End //
+
+  // if (noStudent || noFaculty) {
+  //   cout << "Error reading from files. Starting with blank tables." << endl;
+  //   masterFaculty.recursiveDelete(masterFaculty.getRoot());
+  //   masterStudent.recursiveDelete(masterStudent.getRoot());
+  // }
 }
+
+// void Database::recoverDatabase(){
+//   int id, gpa, advisor;
+//   string name, level, department, major;
+//   int lineType = 1, line = 1, numLines;
+//   Faculty *f;
+//   if(facFile->checkFile()){
+//     numLines = facFile->getNumOfLines();
+//     while(line < numLines){
+//       switch(lineType){
+//         case(1):
+//           name = facFile->readLine(line);
+//           lineType++;
+//           line++;
+//           break;
+//         case(2):
+//           try{
+//             id = stoi(facFile->readLine(line));
+//             lineType++;
+//             line++;
+//           }
+//           catch (exception e)
+//           {
+//             cout << "\nError in text file.\n" << endl;
+//             line = numLines;
+//           }
+//           break;
+//         // case(3):
+//         //   try{
+//         //     id = stoi(facFile->readLine(line));
+//         //     lineType++;
+//         //     line++;
+//         //   }
+//         //   catch (exception e)
+//         //   {
+//         //     cout << "\nError in text file.\n" << endl;
+//         //     line = numLines;
+//         //   }
+//         //   break;
+//
+//       }
+//     }
+//     // for(int i = 0; i < facFile->getNumOfLines(); i++){
+//     //   facFile.readLine(i);
+//     //   f = new Faculty(id, name, level, department)
+//     //   if(facFile.readLine(i) != "----" && isAdvisee == true){
+//     //     f.addAdvisee(stoi(facFile.readLine(i)));
+//     //   }
+//     //   masterFaculty.insert();
+//     // }
+//   }
+//   if(studFile->checkFile()){
+//     for(int i = 0; i < studFile->getNumOfLines(); i++){
+//
+//     }
+//   }
+// }
 
 
 void Database::showMenu(){
@@ -426,7 +537,11 @@ void Database::rollback(){
 
 }   //#13
 void Database::exitDatabase(){
-masterFaculty.getData();
-  facFile->writeFile("facultyTable.txt", masterFaculty.getData());
-  studFile->writeFile("studentTable.txt", masterStudent.getData());
+  ofstream fout;
+  fout.open("facultyTable.txt");
+  fout << masterFaculty.getData() << endl;
+  fout.close();
+  fout.open("studentTable.txt");
+  fout << masterStudent.getData() << endl;
+  fout.close();
 }   //#14

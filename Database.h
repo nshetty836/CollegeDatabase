@@ -3,7 +3,6 @@
 #include "Student.h"
 #include "BST.h"
 #include "Stack.h"
-#include "FileProcessor.h"
 #include <fstream>
 
 using namespace std;
@@ -33,8 +32,7 @@ class Database{
 
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
-    FileProcessor *studFile;
-    FileProcessor *facFile;
+  
 
 
 };

@@ -58,6 +58,7 @@ string Faculty::getInformation(){
   temp += to_string(id) + "\n";
   temp += level + "\n";
   temp += department + "\n";
+  temp += to_string(advisees.size) + "\n";
   temp += advisees.returnList();
   return temp;
 }

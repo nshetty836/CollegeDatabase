@@ -349,7 +349,6 @@ void BST<T>::recData(TreeNode<T>* node, string *temp){
     return;
   recData(node->left, temp);
   *temp += node->data.getInformation();
-  *temp += "----\n";
   recData(node->right, temp);
 }
 
