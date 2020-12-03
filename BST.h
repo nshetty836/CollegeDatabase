@@ -83,11 +83,19 @@ BST<T>::~BST(){
 
 template <class T>
 void BST<T>::destroyRecursive(TreeNode<T>* node){
-  if(node){
-    destroyRecursive(node->left);
-    destroyRecursive(node->right);
-    delete node;
+  if (node == root) {
+    root = NULL;
+    size = 0;
   }
+  if(node != NULL) {
+    if(node->left)
+      destroyRecursive(node->left);
+    if(node->right)
+      destroyRecursive(node->right);
+    delete node;
+    node = NULL;
+  }
+
 }
 
 //prints tree given a node to start from

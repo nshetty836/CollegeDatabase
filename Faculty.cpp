@@ -59,23 +59,15 @@ string Faculty::getInformation(){
   temp += level + "\n";
   temp += department + "\n";
   temp += to_string(advisees.size) + "\n";
-  temp += advisees.returnList();
+  for(int i = 0; i < advisees.size; i++){
+    temp += to_string(*advisees.getNode(i)) + '\n';
+  }
   return temp;
 }
 
 int Faculty::getID(){
   return id;
 }
-
-// string Faculty::getFile(){
-//   string tester = "";
-//   tester += to_string(id);
-//   tester += name;
-//   tester += level;
-//   tester += department;
-//   tester += advisees.returnList();
-//   return tester;
-// }
 
 void Faculty::printAdvisees(){
   if(hasAdvisee())

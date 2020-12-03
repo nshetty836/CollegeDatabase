@@ -83,7 +83,7 @@ int main(){
       db.rollback();
     }
     else if(choice == 14){
-      db.exitDatabase();
+      db.writeToFile();
       break;
     }
     else{

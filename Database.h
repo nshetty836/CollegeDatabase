@@ -3,6 +3,7 @@
 #include "Student.h"
 #include "BST.h"
 #include "Stack.h"
+#include "Transaction.h"
 #include <fstream>
 
 using namespace std;
@@ -28,11 +29,11 @@ class Database{
     void changeAdvisor();   //#6
     void removeAdvisee();   //#6
     void rollback();   //#6
-    void exitDatabase();   //#6
+    void writeToFile();   //#6
 
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
-
+    Stack<Transaction> transactions;
 
 
 };

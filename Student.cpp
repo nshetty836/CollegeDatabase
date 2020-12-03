@@ -60,14 +60,14 @@ string Student::getFile(){
 }
 
 string Student::toString(){
-  string temp = "";
-  temp += "\nName: " + name;
-  temp += "\nID: " + to_string(id);
-  temp += "\nLevel: " + level;
-  temp += "\nMajor: " + major;
-  temp += "\nGPA: " + to_string(gpa);
-  temp += "\nAdvisor: " + to_string(facultyAdvisor) + "\n";
-  return temp;
+  stringstream ss;
+  ss <<  "\nName: " + name;
+  ss << "\nID: " << id;
+  ss << "\nLevel: " + level;
+  ss << "\nMajor: " + major;
+  ss << "\nGPA: " << fixed << setprecision(2) << gpa;
+  ss << "\nAdvisor: " + to_string(facultyAdvisor) + "\n";
+  return ss.str();
 }
 
 void Student::setAdvisor(int fa){
