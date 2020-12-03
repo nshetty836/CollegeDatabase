@@ -57,13 +57,14 @@ void Database::recoverDatabase(){
         Faculty *newFac = new Faculty(id, name, level, department);
         // cout << *newFac << endl;
 
-        cout << "NUM: " << numAdv << endl;
+        if(numAdv == 0){
+          newFac->addAdvisee(0);
+        }
         for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
           getline(facultyStream, fileIn);
           int tempSID = stoi(fileIn);
           newFac->addAdvisee(tempSID);
         }
-        cout << *newFac << endl;
 
         masterFaculty.insert(id, *newFac);
         noFaculty = false;
@@ -198,9 +199,9 @@ void Database::recoverDatabase(){
 //   }
 // }
 
-
+//shows all options for user to pick
 void Database::showMenu(){
-  cout << "\nStudent & Faculty Records Database\n----------------------------------\n";
+  cout << "\nMENU\n---------";
   cout << "\n1.  Print all students and their information" << endl;
   cout << "2.  Print all faculty and their information" << endl;
   cout << "3.  Find and display student information" << endl;
@@ -216,12 +217,19 @@ void Database::showMenu(){
   cout << "13. Rollback" << endl;
   cout << "14. Exit" << endl;
 }
-void Database::printStudents(){ //print all student info in ascending order
+
+//print all student info in ascending order
+void Database::printStudents(){
+  cout << "\n----------------------------------";
+  cout << "\n\tStudent Records\n----------------------------------\n";
   masterStudent.printTree();
 }
 
+//print all faculty info in ascending order
 void Database::printFaculty(){
-  masterFaculty.printTree(); //FIX TO MAKE IT PRINT LIST
+  cout << "\n----------------------------------";
+  cout << "\n\tFaculty Records\n----------------------------------\n";
+  masterFaculty.printTree();
 }    //#2
 void Database::findStudent(){
   int studID;
@@ -301,7 +309,7 @@ void Database::findAdvisees(){
 void Database::addStudent(){//#7
   int id, advisor;
   double gpa;
-  string name, level, major;
+  string name, level, major, userInput;
   while(true){
     try{
       cout << "Enter Student ID: ";
@@ -329,9 +337,11 @@ void Database::addStudent(){//#7
       cout << "Please enter student major: ";
       getline(cin, major);
       cout << "Please enter student GPA: ";
-      cin >> gpa;
+      getline(cin, userInput);
+      gpa = stoi(userInput);
       cout << "Please enter faculty advisor ID: ";
-      cin >> advisor;
+      getline(cin, userInput);
+      advisor = stoi(userInput);
       break;
     }
     catch (exception e)
@@ -349,6 +359,7 @@ void Database::addStudent(){//#7
     Student *s = new Student(id, name, level, major, gpa, advisor);
     masterStudent.insert(id, *s);
     masterFaculty.find(advisor)->addAdvisee(id);
+    cout << "Student successfully added." << endl;
   }
 }
 
@@ -370,6 +381,8 @@ void Database::deleteStudent(){ //#8
       int advisor = masterStudent.find(id)->getAdvisor();
       masterFaculty.find(advisor)->deleteAdvisee(id);
       masterStudent.deleter(id);
+      cout << "Student successfully deleted." << endl;
+
     }
     else{
       cout << "\nStudent record not found." << endl;
@@ -416,6 +429,8 @@ void Database::addFaculty(){ //#9
 
     Faculty *f = new Faculty(id, name, level, department);
     masterFaculty.insert(id, *f);
+    cout << "Faculty member successfully added." << endl;
+
 }
 
 //TO DO: finish this
@@ -423,7 +438,7 @@ void Database::deleteFaculty(){//#10
   int id;
   while(true){
     try{
-      cout << "Enter Faculty ID: ";
+      cout << "Enter Faculty ID to delete: ";
       cin >> id;
       break;
     }
@@ -436,62 +451,91 @@ void Database::deleteFaculty(){//#10
   if(!masterFaculty.contains(id)){
     cout << "\nFaculty record not found." << endl;
   }
-  // //check for advisees to reassign
-  // else{
-  //   Faculty *curr = masterFaculty.find(id);
-  //
-  //   int numAdvisees = curr->getNumAdvisees();
-  //   //need to reassign advisees to another advisor
-  //   if(numAdvisees > 0){
-  //     Student *stud;
-  //     for(int i = 0; i < numAdvisees; i++){
-  //       stud = curr->getAdvisee(i);
-  //
-  //     }
-  //   }
+  //check for advisees to reassign
+  else{
+    Faculty *fac = masterFaculty.find(id);
+    int numAdvisees = fac->getNumAdvisees();
+    //need to reassign advisees to another advisor
+    if(numAdvisees > 0){
+      Student *stud;
+      for(int i = 0; i < numAdvisees; i++){
+        stud = masterStudent.find(fac->getAdvisee(i));
+        int studID = stud->getID();
+        while(true){
+          try{
+            int newAdvisor;
+            cout << "Enter the replacement advisor for Student with ID# " << studID << ": " << endl;
+            cin >> newAdvisor;
+            if(masterFaculty.contains(newAdvisor) && newAdvisor != id)
+              masterFaculty.find(newAdvisor)->addAdvisee(studID);
+            else{
+              cout << "ERROR: Faculty record not found. Here are the faculty members in the database:" << endl;
+              printFaculty();
+              continue;
+            }
+            break;
+          }
+          catch(exception e){
+            cout << "ERROR: Please enter an integer ID number." << endl;
+            continue;
+          }
+
+        }
+      }
+    }
 
     masterFaculty.deleter(id);
+    cout << "Faculty member successfully deleted." << endl;
+  }
+}
+
+void Database::changeAdvisor()  //#11
+{
+  int facID, studID;
+  while(true){
+    try{
+      cout << "Enter Student ID: ";
+      cin >> studID;
+
+      break;
+    }
+    catch(exception e){
+      cout << "ERROR: Please enter a valid integer." << endl;
+      continue;
+    }
+  }
+
+  // id dne
+  if(masterStudent.contains(studID)){
+    Student *stud = masterStudent.find(studID);
+    cout << "Enter a new advisor ID: ";
+    cin >> facID;
+    if(masterFaculty.contains(facID)){
+      Faculty *newAdvisor = masterFaculty.find(facID);
+      Faculty *prevAdvisor = masterFaculty.find(stud->getAdvisor());
+      if(prevAdvisor->containsAdvisee(studID)){
+        prevAdvisor->deleteAdvisee(studID);
+      }
+      else
+        cout << "ERROR: Student is not an advisee of this advisor." << endl;
+
+      if(!newAdvisor->containsAdvisee(studID)){
+        newAdvisor->addAdvisee(studID);
+      }
+      else
+        cout << "ERROR: Student already has this advisor." << endl;
+
+      stud->setAdvisor(facID);
+    }
+    else
+      cout << "ERROR: Faculty record not found.\n" << endl;
+    }
+
+  else
+    cout << "ERROR: Student record not found." << endl;
 
 }
 
-// void Database::changeAdvisor(int studID, int facID)  //#11
-// {
-//   int origialFac = 0;
-//         cout << "Please enter student ID: ";
-//         cin >> studID;
-//
-//         if(masterStudent.find(studID) == NULL){
-//           cout << "The student ID number you entered is not valid. Please try again." << endl;
-//           continue;
-//         }
-//
-//         cout << "Please enter the new faculty advisor ID: ";
-//         cin >> facID;
-//
-//         origialFac = masterStudent.find(studID)->getID();
-//         masterStudent.find(studID)->changeFacultyAdvisor(facID);
-//         origialFac = masterStudent.find(origialFac)->addAdvisee(studID);
-//
-//         // facID DNE -> adding facID
-//         if(masterStudent.find(facID) == NULL){
-//           cout << "The Faculty Advisor you entered does not exist in the tree." << endl;
-//           cout << "Please enter the Faculty Advisor information" << endl;
-//
-//           cout << "Please enter faculty name: ";
-//           cin >> name;
-//           cout << "Please enter faculty level: ";
-//           cin >> level;
-//           cout << "Please enter faculty department: ";
-//           cin >> department;
-//
-//           Faculty *f = new Faculty(facID, name, level, department, studID);
-//           masterStudent.insert(facID, f);
-//         }
-//         else{
-//           masterStudent.find(facID)->addAdvisee(studID);
-//         }
-//
-// }
 void Database::removeAdvisee(){ //#12
     int facID, studID;
     while(true){
@@ -502,7 +546,7 @@ void Database::removeAdvisee(){ //#12
         break;
       }
       catch(exception e){
-        cout << "Error. Please enter a valid integer." << endl;
+        cout << "ERROR: Please enter a valid integer." << endl;
         continue;
       }
     }
@@ -510,6 +554,8 @@ void Database::removeAdvisee(){ //#12
     // id dne
     if(masterFaculty.contains(facID)){
       Faculty fac = *masterFaculty.find(facID);
+      fac.advisees.printList();
+      //printing all advisees of the faculty member for user to choose from
       if(fac.hasAdvisee()){
         cout << "\n-----Advisees----- " << endl;
         cout << "Num: " << fac.getNumAdvisees() << endl;
@@ -517,19 +563,54 @@ void Database::removeAdvisee(){ //#12
           if(masterStudent.contains(fac.getAdvisee(i)))
             cout << *masterStudent.find(fac.getAdvisee(i)) << endl;
         }
+        //asking user to input which student to remove
         cout << "Enter the advisee ID you would like to remove: ";
         cin >> studID;
-        if(fac.containsAdvisee(studID)){
-            fac.deleteAdvisee(studID);
+        if(masterStudent.contains(studID)){
+          Student *stud = masterStudent.find(studID);
+          if(stud != NULL){
+            if(fac.containsAdvisee(studID)){
+              //checking that there is an alternate advisor to advise the student
+              if(masterFaculty.size != 1){
+                fac.deleteAdvisee(studID);
+                //asking user to select new advisor for student
+                while(true){
+                  try{
+                    int newAdvisor;
+                    cout << "Enter the replacement advisor for Student with ID# " << studID << ": " << endl;
+                    cin >> newAdvisor;
+                    if(masterFaculty.contains(newAdvisor))
+                      masterFaculty.find(newAdvisor)->addAdvisee(studID);
+                    else{
+                      cout << "Faculty record not found. Here are the faculty members in the database:" << endl;
+                      printFaculty();
+                      continue;
+                    }
+                    break;
+                  }
+                  catch(exception e){
+                    cout << "Error. Please enter an integer ID number." << endl;
+                    continue;
+                  }
+
+                }
+              }
+              else
+                cout << "ERROR: No alternate faculty member to advise student. Please add a faculty member before removing advisee." << endl;
+            }
+            else
+              cout << "ERROR: Student is not an advisee of this advisor." << endl;
+          }
         }
         else
-          cout << "Advisee not found.\n" << endl;
+          cout << "ERROR: Advisee not found.\n" << endl;
+
       }
       else
-        cout << "No advisees found for this faculty member.\n" << endl;
+        cout << "ERROR: No advisees found for this faculty member.\n" << endl;
     }
     else
-      cout << "Faculty record not found." << endl;
+      cout << "ERROR: Faculty record not found." << endl;
 
 
 }

@@ -25,14 +25,14 @@ class Database{
     void deleteStudent();   //#6
     void addFaculty();   //#6
     void deleteFaculty();   //#6
-    void changeAdvisor(int studID, int facID);   //#6
+    void changeAdvisor();   //#6
     void removeAdvisee();   //#6
     void rollback();   //#6
     void exitDatabase();   //#6
 
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
-  
+
 
 
 };

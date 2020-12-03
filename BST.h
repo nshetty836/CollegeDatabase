@@ -64,6 +64,7 @@ public:
   // T* randomNode();
   //returns the sucessor of the node to be deleted, d
   TreeNode<T>* getSuccessor(TreeNode<T> *d);
+  int getNext(int value, T k);
   void copyTree(TreeNode<T>* node);
   int size;
   TreeNode<T> *root;
@@ -334,6 +335,13 @@ TreeNode<T>* BST<T>::getSuccessor(TreeNode<T> *d){
   return successor;
 
 }
+
+// template <class T>
+// int BST<T>::getNext(int value, T k){
+//   TreeNode<T> *curr = new TreeNode<T>(value, k);
+//   TreeNode<T> *next = getSuccessor(curr);
+//   return next->data.getID();
+// }
 
 template <class T>
 bool BST<T>::isEmpty(){

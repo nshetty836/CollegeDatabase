@@ -260,8 +260,12 @@ T* DoublyLinkedList<T>::removeNode(T key){
 
   //if i make it here i found the node that needs to be deleted
 
+  if(size == 1){
+    front = NULL;
+    back = NULL;
+  }
   //3 cases: front, back, or between
-  if(curr == front ){
+  else if(curr == front ){
     front = curr -> next;
     front->prev = NULL;
   }
@@ -281,18 +285,21 @@ T* DoublyLinkedList<T>::removeNode(T key){
   T* temp = &(curr->data);
   delete curr;
   size--;
-  cout << "SIZE: "<< size <<endl;
   return temp;
 
 }
 
+//SOMETHING MIGHT BE WRONG HERE
 template <class T>
 string DoublyLinkedList<T>::returnList(){
   ListNode<T> *curr = front;
   string tester = "";
 
   while(curr != NULL){
-    tester += to_string(curr->data);
+    if(curr->data != 0)
+      tester += to_string(curr->data);
+    else
+      tester += "None";
     if(curr != NULL){
       tester += "\n";
     }
