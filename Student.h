@@ -1,9 +1,10 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #include <iostream>
+#include "Person.h"
 using namespace std;
 
-class Student{
+class Student: public Person{
   public:
       //default constructor
       Student();
@@ -13,22 +14,21 @@ class Student{
       //destructor
       ~Student();
 
-      int id;
-      string name;
-      string level;
       string major;
       double gpa;
       int facultyAdvisor;
 
       //adding faculty advisor to student
-      void facAdvisor(int fa);
+      void setAdvisor(int fa);
 
-      void getInformantion();
+      string getInformation();
       string getFile();
       string toString();
 
       int getID();
       int getAdvisor();
+      typedef Person super;
+
       friend ostream& operator<<(ostream& os, Student& s)
       {
         os << s.toString();
@@ -37,26 +37,17 @@ class Student{
 
       friend bool operator<(const Student& s1, const Student& s2)
       {
-        if(s1.id < s2.id)
-          return true;
-        else
-          return false;
+        return (s1.id < s2.id);
       }
 
       friend bool operator==(const Student& s1, const Student& s2)
       {
-        if(s1.id == s2.id)
-          return true;
-        else
-          return false;
+        return (s1.id == s2.id);
       }
 
       friend bool operator!=(const Student& s1, const Student& s2)
       {
-        if(s1.id != s2.id)
-          return true;
-        else
-          return false;
+        return(s1.id != s2.id);
       }
 };
 

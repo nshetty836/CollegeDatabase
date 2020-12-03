@@ -1,3 +1,5 @@
+#ifndef PERSON_H
+#define PERSON_H
 #include <iostream>
 using namespace std;
 
@@ -9,12 +11,14 @@ public:
   string name;
 
   Person();
+  Person(int i, string l, string n);
   ~Person();
 
   string getName();
   string getLevel();
 
   int getID();
-  int setID(int i)
+  void setID(int i);
 
-}
+};
+#endif

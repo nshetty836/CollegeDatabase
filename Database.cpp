@@ -2,199 +2,92 @@
 #include "DoublyLinkedList.h"
 
 Database::Database(){
-  Student* s1 = new Student(5152541, "Nikita Shetty", "Sophomore", "Data", 3.97, 334444);
-  Student* s2 = new Student(56666, "Rachna Shetty", "Sophomore", "Data", 3.97, 334444);
-  Student* s3 = new Student(657571, "Suraj Shetty", "Sophomore", "Data", 3.97, 334444);
+  Student* s1 = new Student(1, "Nikita Shetty", "Sophomore", "Data", 3.97, 4);
+  Student* s2 = new Student(2, "Rachna Shetty", "Sophomore", "Data", 3.97, 4);
+  Student* s3 = new Student(3, "Suraj Shetty", "Sophomore", "Data", 3.97, 6);
 
-  masterStudent.insert(*s1);
-  masterStudent.insert(*s2);
-  masterStudent.insert(*s3);
+  masterStudent.insert(1, *s1);
+  masterStudent.insert(2, *s2);
+  masterStudent.insert(3, *s3);
 
-  Faculty* f1 = new Faculty(5152541, "Kashish Pandey", "Sophomore", "hello");
-  Faculty* f2 = new Faculty(5666666, "Rachna Shetty", "Sophomore", "wassup");
-  Faculty* f3 = new Faculty(657571, "Suraj Shetty", "Sophomore", "hiii");
+  Faculty* f1 = new Faculty(4, "Kashish Pandey", "Sophomore", "hello");
+  Faculty* f2 = new Faculty(5, "Rachna Shetty", "Sophomore", "wassup");
+  Faculty* f3 = new Faculty(6, "Suraj Shetty", "Sophomore", "hiii");
   //
-  f1->addAdvisee(2222);
-  f1->advisees.printList();
-  masterFaculty.insert(*f1);
-  masterFaculty.printTree();
-  masterFaculty.insert(*f2);
-  masterFaculty.insert(*f3);
+  f1->addAdvisee(1);
+  f1->addAdvisee(2);
+  f3->addAdvisee(3);
+
+  // f1->advisees.printList();
+  masterFaculty.insert(4, *f1);
+  // masterFaculty.printTree();
+  masterFaculty.insert(5, *f2);
+  masterFaculty.insert(6, *f3);
+  studFile = new FileProcessor("masterStudent.txt");
+  facFile = new FileProcessor("masterFaculty.txt");
+
 
 }
 Database::~Database(){}
 
-void Database::recoverDatabase(){}
-<<<<<<< Updated upstream
-void Database::showMenu(){}
-void Database::printStudents(){}  //#1
-void Database::printFaculty(){}    //#2
-void Database::findStudent(int studID){} //#3
-void Database::findFaculty(int facID){}  //#4
-void Database::findAdvisor(int studID){}   //#5
-void Database::findAdvisee(int facID){}   //#6
+void Database::recoverDatabase(){
+  int id, gpa, advisor;
+  string name, level, department, major;
+  int lineType = 1, line = 1, numLines;
+  Faculty *f;
+  if(facFile->checkFile()){
+    numLines = facFile->getNumOfLines();
+    while(line < numLines){
+      switch(lineType){
+        case(1):
+          name = facFile->readLine(line);
+          lineType++;
+          line++;
+          break;
+        case(2):
+          try{
+            id = stoi(facFile->readLine(line));
+            lineType++;
+            line++;
+          }
+          catch (exception e)
+          {
+            cout << "\nError in text file.\n" << endl;
+            line = numLines;
+          }
+          break;
+        // case(3):
+        //   try{
+        //     id = stoi(facFile->readLine(line));
+        //     lineType++;
+        //     line++;
+        //   }
+        //   catch (exception e)
+        //   {
+        //     cout << "\nError in text file.\n" << endl;
+        //     line = numLines;
+        //   }
+        //   break;
 
-
-void Database::addStudent(int studID){//#7
-  cout << "Please enter Student ID: ";
-  cin >> id;
-
-  if(masterStudent -> searchTree(id) != NULL){
-    cout << "The ID number you entered is already in use. Please try again.";
-    continue;
-  }
-    cout << "Please enter student name: ";
-    cin >> name;
-    cout << "Please enter student level: ";
-    cin >> level;
-    cout << "Please enter student major: ";
-    cin >> major;
-    cout << "Please enter student GPA: ";
-    cin >> gpa;
-    cout << "Please enter faculty advisor ID: ";
-    cin >> facID;
-
-    Student *s = new Student(id, name, level, major, gpa, facultyAdvisor);
-      masterStudent->insert(id, s);
-
-      if(masterFaculty->searchTree(facID) == NULL){
-        cout << "The Faculty Advisor you entered seems to not exist in the tree. Try again." << endl;
-        cout << "Please enter the Faculty Advisor ID: " << endl;
-        cout << endl;
-
-        cout << "Please enter faculty name: ";
-        cin >> name;
-        cout << "Please enter faculty level: ";
-        cin >> level;
-        cout << "Please enter faculty department: ";
-        cin >> department;
-
-        Faculty *f = new Faculty(id, name, level, department, adviseeID);
-        masterFaculty->insert(faID, f);
-      }
-      else{
-        masterFaculty->searchTree(facID)->addAdvisee(id);
       }
     }
+    // for(int i = 0; i < facFile->getNumOfLines(); i++){
+    //   facFile.readLine(i);
+    //   f = new Faculty(id, name, level, department)
+    //   if(facFile.readLine(i) != "----" && isAdvisee == true){
+    //     f.addAdvisee(stoi(facFile.readLine(i)));
+    //   }
+    //   masterFaculty.insert();
+    // }
+  }
+  if(studFile->checkFile()){
+    for(int i = 0; i < studFile->getNumOfLines(); i++){
 
-void Database::deleteStudent(int studID){ //#8
-        cout << "Please enter Student ID: ";
-        cin >> studID;
-        if(masterStudent->searchTree(studID) == NULL){
-          cout << "The ID number you entered is not valid. Please try again." << endl;
-          continue;
-        }
-        facID = masterStudent->searchTree(studID)->getID();
-        masterFaculty->searchTree(facID)->setAdvisees(studID);
-        masterStudent->deleter(studID)
+    }
+  }
 }
-void Database::addFaculty(int facID){ //#9
-      cout << "Please enter ID: ";
-      cin >> id;
 
-      if(masterFaculty->searchTree(id) != NULL){
-        cout << "The ID number you entered is not valid. Please try again."<< endl;
-        continue;
-      }
 
-      cout << "Please enter faculty name: ";
-      cin >> name;
-      cout << "Please enter faculty level: ";
-      cin >> level;
-      cout << "Please enter faculty department: ";
-      cin >> department;
-      cout << "Please enter ID number of one advisees: ";
-      cin >> advisees;
-
-      Faculty *f = new Faculty(id, name, level, department, adviseeID);
-      masterFaculty->insert(id, f);
-
-      if(masterStudent->searchTree(adviseeID) == NULL){
-        cout << "The student doesn't exist in the tree. Try again." << endl;
-        cout << "Please enter student information" << endl;
-
-        cout << "Please enter student name: ";
-        cin >> name;
-        cout << "Please enter student level: ";
-        cin >> level;
-        cout << "Please enter student major: ";
-        cin >> major;
-        cout << "Please enter student GPA: ";
-        cin >> gpa;
-
-        Student *s = new Student(ad, name, level, major, gpa, id);
-        masterStudent->insert(ad, s);
-      }
-}
-void Database::deleteFaculty(int facID){//#10
-  cout << "Please enter faculty ID: ";
-      cin >> id;
-      if(masterFaculty->searchTree(facID) == NULL){
-        cout << "The ID number you entered is not valid. Please try again." << endl;
-        continue;
-      }
-      masterFaculty->searchTree(facID);
-      masterFaculty->deleteNode(facID);
-}
-void Database::changeAdvisor(int studID, int facID)  //#11
-{
-  int origialFac = 0;
-        cout << "Please enter student ID: ";
-        cin >> studID;
-
-        if(masterStudent->searchTree(studID) == NULL){
-          cout << "The student ID number you entered is not valid. Please try again." << endl;
-          continue;
-        }
-
-        cout << "Please enter the new faculty advisor ID: ";
-        cin >> facID;
-
-        origialFac = masterStudent->searchTree(studID)->getID();
-        masterStudent->searchTree(studID)->changeFacultyAdvisor(facID);
-        origialFac = masterFaculty->searchTree(origialFac)->setAdvisees(studID);
-
-        // facID DNE -> adding facID
-        if(masterFaculty->searchTree(facID) == NULL){
-          cout << "The Faculty Advisor you entered does not exist in the tree." << endl;
-          cout << "Please enter the Faculty Advisor information" << endl;
-
-          cout << "Please enter faculty name: ";
-          cin >> name;
-          cout << "Please enter faculty level: ";
-          cin >> level;
-          cout << "Please enter faculty department: ";
-          cin >> department;
-
-          Faculty *f = new Faculty(facID, name, level, department, studID);
-          masterFaculty->insert(facID, f);
-        }
-        else{
-          masterFaculty->searchTree(facID)->addAdvisee(studID);
-        }
-
-}
-void Database::removeAdvisee(int studID, int facID){ //#12
-  cout << "Please enter faculty ID: ";
-      cin >> facID;
-      //id dne
-      if(masterFaculty->searchTree(facID) == NULL){
-        cout << "Please enter a valid faculty ID." << endl;
-        continue;
-      }
-      cout << "Please enter the student ID you would like to remove: ";
-      cin >> studID;
-
-      // id dne
-      if(masterStudent->search(studID) == NULL){
-        cout << "Invalid Student ID, try again" << endl;
-        continue;
-      }
-      studID = masterFaculty->search(facID)->setAdvisees(studID);
-}
-void Database::rollback(){}   //#13
-void Database::exitDatabase(){}   //#14
-=======
 void Database::showMenu(){
   cout << "\nStudent & Faculty Records Database\n----------------------------------\n";
   cout << "\n1.  Print all students and their information" << endl;
@@ -215,54 +108,325 @@ void Database::showMenu(){
 void Database::printStudents(){ //print all student info in ascending order
   masterStudent.printTree();
 }
+
 void Database::printFaculty(){
   masterFaculty.printTree(); //FIX TO MAKE IT PRINT LIST
 }    //#2
-void Database::findStudent(int studID){
-  Student temp(studID);
-  if(masterStudent.contains(temp)){
-    cout << *masterStudent.find(temp) << endl;
+void Database::findStudent(){
+  int studID;
+  cout << "Enter the student ID: " << endl;
+  cin >> studID;
+  if(masterStudent.contains(studID)){
+    cout << *masterStudent.find(studID) << endl;
   }
   else{
     cout << "ID not found." << endl;
   }
 } //#3
-void Database::findFaculty(int facID){
-  Faculty temp(facID);
-  if(masterFaculty.contains(temp)){
-    cout << *masterFaculty.find(temp) << endl;
+void Database::findFaculty(){
+  int facID;
+  cout << "Enter the faculty ID: " << endl;
+  cin >> facID;
+  //checking if faculty ID is in the databas
+  if(masterFaculty.contains(facID)){
+    Faculty fac = *masterFaculty.find(facID);
+    cout << fac << endl;
+    //printing advisee information
+    if(fac.hasAdvisee()){
+      cout << "\n-----Advisees----- " << endl;
+      for(int i = 0; i < fac.getNumAdvisees(); i++){
+        if(masterStudent.contains(fac.getAdvisee(i)))
+          cout << *masterStudent.find(fac.getAdvisee(i)) << endl;
+      }
+    }
   }
   else{
     cout << "ID not found." << endl;
   }
 }  //#4
-void Database::findAdvisor(int studID){
-  Student temp(studID);
-  if(masterStudent.contains(temp)){
-    Student stud = *masterStudent.find(temp);
+void Database::findAdvisor(){
+  int studID;
+  cout << "Enter the student ID: " << endl;
+  cin >> studID;
+  //checking is student is in database and then printing advisor
+  if(masterStudent.contains(studID)){
+    Student stud = *masterStudent.find(studID);
     cout << "Advisor ID: " << stud.getAdvisor() << endl;
   }
   else{
     cout << "ID not found." << endl;
   }
 }   //#5
-void Database::findAdvisees(int facID){
-  Faculty temp(facID);
-  if(masterFaculty.contains(temp)){
-    Faculty fac = *masterFaculty.find(temp);
-    cout << "Advisee IDs: " << endl;
-    fac.printAdvisees();
+void Database::findAdvisees(){
+  int facID;
+  while(true){
+    try{
+      cout << "Enter Faculty ID: ";
+      cin >> facID;
+      break;
+    }
+    catch(exception e){
+      cout << "Error. Please enter a valid integer." << endl;
+      continue;
+    }
+  }
+  if(masterFaculty.contains(facID)){
+    Faculty fac = *masterFaculty.find(facID);// CHECK IF THIS WORKS
+    if(fac.hasAdvisee()){
+      cout << "\n-----Advisees----- " << endl;
+      for(int i = 0; i < fac.getNumAdvisees(); i++){
+        if(masterStudent.contains(fac.getAdvisee(i)))
+          cout << *masterStudent.find(fac.getAdvisee(i)) << endl;
+      }
+    }
+    else
+      cout << "No advisees found.\n" << endl;
   }
   else{
     cout << "ID not found." << endl;
   }
 }   //#6
-void Database::addStudent(int studID){}   //#6
-void Database::deleteStudent(int studID){}   //#6
-void Database::addFaculty(int facID){}   //#6
-void Database::deleteFaculty(int facID){}   //#6
-void Database::changeAdvisor(int studID, int facID){}   //#6
-void Database::removeAdvisee(int studID, int facID){}   //#6
-void Database::rollback(){}   //#6
-void Database::exitDatabase(){}   //#6
->>>>>>> Stashed changes
+
+void Database::addStudent(){//#7
+  int id, advisor;
+  double gpa;
+  string name, level, major;
+  while(true){
+    try{
+      cout << "Enter Student ID: ";
+      cin >> id;
+
+      if(masterStudent.contains(id) == true){
+        cout << "The ID number you entered is already in use. Please enter another." << endl;
+      }
+      else
+        break;
+    }
+    catch(exception e){
+      cout << "Error. Please enter a valid integer." << endl;
+      continue;
+    }
+  }
+  //getting user input for student specs
+  while(true){
+    try{
+      cout << "Please enter student name: ";
+      cin.ignore();
+      getline(cin, name);
+      cout << "Please enter student level: ";
+      getline(cin, level);
+      cout << "Please enter student major: ";
+      getline(cin, major);
+      cout << "Please enter student GPA: ";
+      cin >> gpa;
+      cout << "Please enter faculty advisor ID: ";
+      cin >> advisor;
+      break;
+    }
+    catch (exception e)
+    {
+      cout << "Error. Please enter a valid input." << endl;
+      continue;
+
+    }
+  }
+
+  //checking if the given advisor ID is in database and adding student if it is
+  if(masterFaculty.contains(advisor) == false)
+    cout << "\nThe faculty advisor you entered is not in the database. Please add them before continuing." << endl;
+  else{
+    Student *s = new Student(id, name, level, major, gpa, advisor);
+    masterStudent.insert(id, *s);
+    masterFaculty.find(advisor)->addAdvisee(id);
+  }
+}
+
+void Database::deleteStudent(){ //#8
+    int id;
+    while(true){
+      try{
+        cout << "Enter Student ID to delete: ";
+        cin >> id;
+        break;
+      }
+      catch (exception e){
+        cout << "\nError. Please enter an integer.\n" << endl;
+        continue;
+      }
+    }
+    //if the student is in the database, delete the student id from advisor's list and delete student
+    if(masterStudent.contains(id)){
+      int advisor = masterStudent.find(id)->getAdvisor();
+      masterFaculty.find(advisor)->deleteAdvisee(id);
+      masterStudent.deleter(id);
+    }
+    else{
+      cout << "\nStudent record not found." << endl;
+    }
+}
+
+void Database::addFaculty(){ //#9
+    int id, advisee;
+    string name, level, department;
+    while(true){
+      try{
+        cout << "Enter Faculty ID: ";
+        cin >> id;
+
+        if(masterFaculty.contains(id) == true){
+          cout << "The ID number you entered is already in use. Please enter another." << endl;
+        }
+        else
+          break;
+      }
+      catch(exception e){
+        cout << "Error. Please enter a valid integer." << endl;
+        continue;
+      }
+    }
+    while(true){
+      try{
+        cout << "Please enter faculty name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Please enter faculty level: ";
+        getline(cin, level);
+        cout << "Please enter faculty department: ";
+        getline(cin, department);
+        break;
+      }
+      catch (exception e)
+      {
+        cout << "Error. Please enter a valid input." << endl;
+        continue;
+
+      }
+    }
+
+    Faculty *f = new Faculty(id, name, level, department);
+    masterFaculty.insert(id, *f);
+}
+
+//TO DO: finish this
+void Database::deleteFaculty(){//#10
+  int id;
+  while(true){
+    try{
+      cout << "Enter Faculty ID: ";
+      cin >> id;
+      break;
+    }
+    catch(exception e){
+      cout << "Error. Please enter a valid integer." << endl;
+      continue;
+    }
+  }
+
+  if(!masterFaculty.contains(id)){
+    cout << "\nFaculty record not found." << endl;
+  }
+  // //check for advisees to reassign
+  // else{
+  //   Faculty *curr = masterFaculty.find(id);
+  //
+  //   int numAdvisees = curr->getNumAdvisees();
+  //   //need to reassign advisees to another advisor
+  //   if(numAdvisees > 0){
+  //     Student *stud;
+  //     for(int i = 0; i < numAdvisees; i++){
+  //       stud = curr->getAdvisee(i);
+  //
+  //     }
+  //   }
+
+    masterFaculty.deleter(id);
+
+}
+
+// void Database::changeAdvisor(int studID, int facID)  //#11
+// {
+//   int origialFac = 0;
+//         cout << "Please enter student ID: ";
+//         cin >> studID;
+//
+//         if(masterStudent.find(studID) == NULL){
+//           cout << "The student ID number you entered is not valid. Please try again." << endl;
+//           continue;
+//         }
+//
+//         cout << "Please enter the new faculty advisor ID: ";
+//         cin >> facID;
+//
+//         origialFac = masterStudent.find(studID)->getID();
+//         masterStudent.find(studID)->changeFacultyAdvisor(facID);
+//         origialFac = masterStudent.find(origialFac)->addAdvisee(studID);
+//
+//         // facID DNE -> adding facID
+//         if(masterStudent.find(facID) == NULL){
+//           cout << "The Faculty Advisor you entered does not exist in the tree." << endl;
+//           cout << "Please enter the Faculty Advisor information" << endl;
+//
+//           cout << "Please enter faculty name: ";
+//           cin >> name;
+//           cout << "Please enter faculty level: ";
+//           cin >> level;
+//           cout << "Please enter faculty department: ";
+//           cin >> department;
+//
+//           Faculty *f = new Faculty(facID, name, level, department, studID);
+//           masterStudent.insert(facID, f);
+//         }
+//         else{
+//           masterStudent.find(facID)->addAdvisee(studID);
+//         }
+//
+// }
+void Database::removeAdvisee(){ //#12
+    int facID, studID;
+    while(true){
+      try{
+        cout << "Enter Faculty ID: ";
+        cin >> facID;
+
+        break;
+      }
+      catch(exception e){
+        cout << "Error. Please enter a valid integer." << endl;
+        continue;
+      }
+    }
+
+    // id dne
+    if(masterFaculty.contains(facID)){
+      Faculty fac = *masterFaculty.find(facID);
+      if(fac.hasAdvisee()){
+        cout << "\n-----Advisees----- " << endl;
+        cout << "Num: " << fac.getNumAdvisees() << endl;
+        for(int i = 0; i < fac.getNumAdvisees(); i++){
+          if(masterStudent.contains(fac.getAdvisee(i)))
+            cout << *masterStudent.find(fac.getAdvisee(i)) << endl;
+        }
+        cout << "Enter the advisee ID you would like to remove: ";
+        cin >> studID;
+        if(fac.containsAdvisee(studID)){
+            fac.deleteAdvisee(studID);
+        }
+        else
+          cout << "Advisee not found.\n" << endl;
+      }
+      else
+        cout << "No advisees found for this faculty member.\n" << endl;
+    }
+    else
+      cout << "Faculty record not found." << endl;
+
+
+}
+void Database::rollback(){
+
+}   //#13
+void Database::exitDatabase(){
+masterFaculty.getData();
+  facFile->writeFile("facultyTable.txt", masterFaculty.getData());
+  studFile->writeFile("studentTable.txt", masterStudent.getData());
+}   //#14

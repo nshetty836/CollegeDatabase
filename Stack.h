@@ -69,7 +69,8 @@ S Stack<S>::pop(){
     return myArray[top--];
   }
   catch(string e){
-    return '\0';
+    S null;
+    return null;
   }
 }
 
@@ -83,7 +84,8 @@ S Stack<S>::peek(){
     return myArray[top];
   }
   catch(string e){
-    return '\0';
+    S null;
+    return null;
   }
 }
 

@@ -2,9 +2,11 @@
 #define FACULTY_H
 #include <iostream>
 #include "DoublyLinkedList.h"
+#include "Person.h"
+
 using namespace std;
 
-class Faculty{
+class Faculty: public Person{
   public:
       //default constructor
       Faculty();
@@ -14,26 +16,27 @@ class Faculty{
       //destructor
       ~Faculty();
 
-      int id;
-      string name;
-      string level;
       string department;
       DoublyLinkedList<int> advisees;
 
-      void getInformation();
+      string getInformation();
       string getFile();
       int getID();
       bool hasAdvisee();
+      int getNumAdvisees();
+
 
       // returning advisee table
-      // DoublyLinkedList<int>* getAdvisees();
+      int getAdvisee(int pos);
       // deleting at specific position
-      int* setAdvisees(int position);
       //adding to advisee list
       void addAdvisee(int adviseeID);
+      void deleteAdvisee(int adviseeID);
+      bool containsAdvisee(int adviseeID);
       // id# of faculty advisee being printed
       void printAdvisees();
       string toString();
+      typedef Person super;
 
       friend ostream& operator<<(ostream& os, Faculty& f)
       {
@@ -43,26 +46,17 @@ class Faculty{
 
       friend bool operator<(const Faculty& f1, const Faculty& f2)
       {
-        if(f1.id < f2.id)
-          return true;
-        else
-          return false;
+        return (f1.id < f2.id);
       }
 
       friend bool operator==(const Faculty& f1, const Faculty& f2)
       {
-        if(f1.id == f2.id)
-          return true;
-        else
-          return false;
+        return (f1.id == f2.id);
       }
 
       friend bool operator!=(const Faculty& f1, const Faculty& f2)
       {
-        if(f1.id != f2.id)
-          return true;
-        else
-          return false;
+        return (f1.id != f2.id);
       }
 };
 #endif

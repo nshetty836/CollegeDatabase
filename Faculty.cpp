@@ -12,7 +12,7 @@ Faculty::Faculty(){
 }
 
 //overloaded constructor
-Faculty::Faculty(int i, string n, string l, string d){
+Faculty::Faculty(int i, string n, string l, string d): super(i, n, l){
   id = i;
   name = n;
   level = l;
@@ -28,25 +28,38 @@ Faculty::~Faculty(){
   // delete advisees;
 }
 
-// DoublyLinkedList<int> Faculty::getAdvisees(){
-//   return advisees;
-// }
+int Faculty::getAdvisee(int pos){
+  int temp = *advisees.getNode(pos);
+  return temp;
+}
 
 void Faculty::addAdvisee(int adviseeID){
-  advisees.insertFront(&adviseeID);
+  advisees.insertFront(adviseeID);
 }
 
-int* Faculty::setAdvisees(int position){
-  return advisees.deletePos(position);
+void Faculty::deleteAdvisee(int adviseeID){
+  advisees.removeNode(adviseeID);
 }
 
-void Faculty::getInformation(){
-  cout << "ID: " << id;
-  cout << "Name: " << name;
-  cout << "Level: " << level;
-  cout << "Department: " << department;
-  cout << "Advisees ID: " << endl;
-  advisees.printList();
+bool Faculty::containsAdvisee(int adviseeID){
+  if(advisees.find(adviseeID) == -1)
+    return false;
+  else
+    return true;
+}
+
+int Faculty::getNumAdvisees(){
+  return advisees.size;
+}
+
+string Faculty::getInformation(){
+  string temp = "";
+  temp += name + "\n";
+  temp += to_string(id) + "\n";
+  temp += level + "\n";
+  temp += department + "\n";
+  temp += advisees.returnList();
+  return temp;
 }
 
 int Faculty::getID(){
@@ -64,7 +77,8 @@ string Faculty::getFile(){
 }
 
 void Faculty::printAdvisees(){
-  advisees.printList();
+  if(hasAdvisee())
+    advisees.printList();
 }
 
 bool Faculty::hasAdvisee(){
@@ -77,11 +91,11 @@ bool Faculty::hasAdvisee(){
 
 string Faculty::toString(){
   string temp = "";
-  temp += "ID: " + to_string(id);
   temp += "\nName: " + name;
+  temp += "\nID: " + to_string(id);
   temp += "\nLevel: " + level;
   temp += "\nDepartment: " + department;
-  temp += "\nAdvisees: \n";
+  temp += "\nAdvisee IDs: ";
   temp += advisees.returnList();
   return temp;
 }

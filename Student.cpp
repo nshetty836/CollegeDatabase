@@ -1,6 +1,7 @@
 #include "Student.h"
 #include <string>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 //default constructor
@@ -14,30 +15,29 @@ Student::Student(){
 }
 
 //overloaded constructor
-Student::Student(int i, string n, string l, string m, double g, int f){
-  id = i;
-  name = n;
-  level = l;
+Student::Student(int i, string n, string l, string m, double g, int f): super(i, n, l){
+  // id = i;
+  // name = n;
+  // level = l;
   major = m;
   gpa = g;
   facultyAdvisor = f;
 }
 
-Student::Student(int i){
-  id = i;
-}
 
 //destructor
 Student::~Student(){
 }
 
-void Student::getInformantion(){
-  cout << "ID: " << id;
-  cout << "Name: " << name;
-  cout << "Level: " << level;
-  cout << "Major: " << major;
-  cout << "GPA: " << gpa;
-  cout << "Faculty Advisor ID: " << facultyAdvisor;
+string Student::getInformation(){
+  stringstream ss;
+  ss <<  name + "\n";
+  ss << id << "\n";
+  ss << level + "\n";
+  ss << major + "\n";
+  ss << fixed << setprecision(2) << gpa << "\n";
+  ss << facultyAdvisor << "\n";
+  return ss.str();
 }
 
 int Student::getID(){
@@ -61,8 +61,8 @@ string Student::getFile(){
 
 string Student::toString(){
   string temp = "";
-  temp += "ID: " + to_string(id);
   temp += "\nName: " + name;
+  temp += "\nID: " + to_string(id);
   temp += "\nLevel: " + level;
   temp += "\nMajor: " + major;
   temp += "\nGPA: " + to_string(gpa);
@@ -70,6 +70,6 @@ string Student::toString(){
   return temp;
 }
 
-void Student::facAdvisor(int fa){
+void Student::setAdvisor(int fa){
   facultyAdvisor = fa;
 }
