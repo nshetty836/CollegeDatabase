@@ -2,8 +2,7 @@ Kashish Pandey
 4
 Sophomore
 hello
-1
-1
+0
 Rachna Shetty
 5
 Sophomore
@@ -15,6 +14,6 @@ Suraj Shetty
 Sophomore
 hiii
 2
-2
 3
+2
 

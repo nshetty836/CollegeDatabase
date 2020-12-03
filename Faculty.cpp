@@ -67,15 +67,15 @@ int Faculty::getID(){
   return id;
 }
 
-string Faculty::getFile(){
-  string tester = "";
-  tester += to_string(id);
-  tester += name;
-  tester += level;
-  tester += department;
-  tester += advisees.returnList();
-  return tester;
-}
+// string Faculty::getFile(){
+//   string tester = "";
+//   tester += to_string(id);
+//   tester += name;
+//   tester += level;
+//   tester += department;
+//   tester += advisees.returnList();
+//   return tester;
+// }
 
 void Faculty::printAdvisees(){
   if(hasAdvisee())

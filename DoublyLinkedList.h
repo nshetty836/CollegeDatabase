@@ -289,7 +289,6 @@ T* DoublyLinkedList<T>::removeNode(T key){
 
 }
 
-//SOMETHING MIGHT BE WRONG HERE
 template <class T>
 string DoublyLinkedList<T>::returnList(){
   ListNode<T> *curr = front;

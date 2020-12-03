@@ -30,8 +30,8 @@ Database::Database(){
 Database::~Database(){}
 
 void Database::recoverDatabase(){
-  int id, gpa, advisor;
-  string name, level, department, major;
+  int id, gpa, advisor, numAdv;
+  string name, level, department, major, user;
   ifstream facultyStream;
   facultyStream.open("facultyTable.txt");
   bool noFaculty = false; //flag will be set if error encountered
@@ -51,7 +51,8 @@ void Database::recoverDatabase(){
         getline(facultyStream, fileIn); //get the department
         department = fileIn;
         getline(facultyStream, fileIn); //get the number of advisees
-        int numAdv = stoi(fileIn);
+        numAdv = stoi(fileIn);
+
 
         //ADD THE NEW FACULTY MEMBER TO THE TABLE
         Faculty *newFac = new Faculty(id, name, level, department);
@@ -62,8 +63,10 @@ void Database::recoverDatabase(){
         }
         for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
           getline(facultyStream, fileIn);
-          int tempSID = stoi(fileIn);
-          newFac->addAdvisee(tempSID);
+          if(numAdv != 1 && fileIn != "None"){
+            int tempSID = stoi(fileIn);
+            newFac->addAdvisee(tempSID);
+          }
         }
 
         masterFaculty.insert(id, *newFac);
@@ -306,10 +309,12 @@ void Database::findAdvisees(){
   }
 }   //#6
 
-void Database::addStudent(){//#7
+//asks user for information for student to be added to the database
+void Database::addStudent(){
   int id, advisor;
   double gpa;
   string name, level, major, userInput;
+  //checking for valid student ID number and whether it is already in data base
   while(true){
     try{
       cout << "Enter Student ID: ";
@@ -365,21 +370,16 @@ void Database::addStudent(){//#7
 
 void Database::deleteStudent(){ //#8
     int id;
-    while(true){
-      try{
-        cout << "Enter Student ID to delete: ";
-        cin >> id;
-        break;
-      }
-      catch (exception e){
-        cout << "\nError. Please enter an integer.\n" << endl;
-        continue;
-      }
-    }
+    //getting id number
+    cout << "Enter Student ID to delete: ";
+    cin >> id;
     //if the student is in the database, delete the student id from advisor's list and delete student
     if(masterStudent.contains(id)){
+      cout << "hello" << endl;
       int advisor = masterStudent.find(id)->getAdvisor();
+      cout << "hello" << endl;
       masterFaculty.find(advisor)->deleteAdvisee(id);
+      cout << "hello" << endl;
       masterStudent.deleter(id);
       cout << "Student successfully deleted." << endl;
 
