@@ -64,7 +64,7 @@ S Stack<S>::pop(){
   try{
     //check if empty before proceeding
     if(isEmpty()){
-      throw "empty"s;
+      throw "empty";
     }
     return myArray[top--];
   }
@@ -79,7 +79,7 @@ S Stack<S>::peek(){
   try{
     //check if empty before proceeding
     if(isEmpty()){
-      throw "empty"s;
+      throw "empty";
     }
     return myArray[top];
   }
