@@ -20,24 +20,19 @@ class Faculty: public Person{
       DoublyLinkedList<int> advisees;
 
       string getInformation();
-      string getFile();
       int getID();
       bool hasAdvisee();
       int getNumAdvisees();
-
-
-      // returning advisee table
       int getAdvisee(int pos);
-      // deleting at specific position
-      //adding to advisee list
       void addAdvisee(int adviseeID);
       void deleteAdvisee(int adviseeID);
       bool containsAdvisee(int adviseeID);
-      // id# of faculty advisee being printed
       void printAdvisees();
       string toString();
+
       typedef Person super;
 
+      //overloaded operators to compare Faculty objects
       friend ostream& operator<<(ostream& os, Faculty& f)
       {
         os << f.toString();

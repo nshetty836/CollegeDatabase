@@ -18,17 +18,16 @@ class Student: public Person{
       double gpa;
       int facultyAdvisor;
 
-      //adding faculty advisor to student
-      void setAdvisor(int fa);
-
       string getInformation();
-      string getFile();
       string toString();
 
       int getID();
       int getAdvisor();
+      void setAdvisor(int fa);
+
       typedef Person super;
 
+      //overloaded operators to compare Student objects
       friend ostream& operator<<(ostream& os, Student& s)
       {
         os << s.toString();

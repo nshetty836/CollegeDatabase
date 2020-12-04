@@ -56,9 +56,7 @@ public:
   T* getMax();
   T* getMin();
   void recPrint(TreeNode<T> *node); //recursive print, takes a node so we can print any part of the tree
-  void recPrintKeys(TreeNode<T> *node);
   void printTree();
-  void printKeys();
   void recData(TreeNode<T>* node, string *temp);
   string getData();
   // T* randomNode();
@@ -109,24 +107,11 @@ void BST<T>::recPrint(TreeNode<T> *node){
   recPrint(node->right);
 }
 
-template <class T>
-void BST<T>::recPrintKeys(TreeNode<T> *node){
-  if(node == NULL)
-    return;
-
-  recPrint(node->left);
-  cout << node->key << endl;
-  recPrint(node->right);
-}
 
 //prints entire tree
 template <class T>
 void BST<T>::printTree(){
   recPrint(root);
-}
-template <class T>
-void BST<T>::printKeys(){
-  recPrintKeys(root);
 }
 
 template <class T>
@@ -343,13 +328,6 @@ TreeNode<T>* BST<T>::getSuccessor(TreeNode<T> *d){
   return successor;
 
 }
-
-// template <class T>
-// int BST<T>::getNext(int value, T k){
-//   TreeNode<T> *curr = new TreeNode<T>(value, k);
-//   TreeNode<T> *next = getSuccessor(curr);
-//   return next->data.getID();
-// }
 
 template <class T>
 bool BST<T>::isEmpty(){

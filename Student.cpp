@@ -16,9 +16,6 @@ Student::Student(){
 
 //overloaded constructor
 Student::Student(int i, string n, string l, string m, double g, int f): super(i, n, l){
-  // id = i;
-  // name = n;
-  // level = l;
   major = m;
   gpa = g;
   facultyAdvisor = f;
@@ -26,8 +23,7 @@ Student::Student(int i, string n, string l, string m, double g, int f): super(i,
 
 
 //destructor
-Student::~Student(){
-}
+Student::~Student(){}
 
 string Student::getInformation(){
   stringstream ss;
@@ -47,16 +43,8 @@ int Student::getID(){
 int Student::getAdvisor(){
   return facultyAdvisor;
 }
-
-string Student::getFile(){
-  string tester = " ";
-  tester += to_string(id);
-  tester += name;
-  tester += level;
-  tester += major;
-  tester += to_string(gpa);
-  tester += to_string(facultyAdvisor);
-  return tester;
+void Student::setAdvisor(int fa){
+  facultyAdvisor = fa;
 }
 
 string Student::toString(){
@@ -68,8 +56,4 @@ string Student::toString(){
   ss << "\nGPA: " << fixed << setprecision(2) << gpa;
   ss << "\nAdvisor: " + to_string(facultyAdvisor) + "\n";
   return ss.str();
-}
-
-void Student::setAdvisor(int fa){
-  facultyAdvisor = fa;
 }

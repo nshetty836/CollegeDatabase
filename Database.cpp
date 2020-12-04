@@ -1,34 +1,10 @@
 #include "Database.h"
 #include "DoublyLinkedList.h"
 
-Database::Database(){
-  // Student* s1 = new Student(1, "Nikita Shetty", "Sophomore", "Data", 3.97, 4);
-  // Student* s2 = new Student(2, "Rachna Shetty", "Sophomore", "Data", 3.97, 4);
-  // Student* s3 = new Student(3, "Suraj Shetty", "Sophomore", "Data", 3.97, 6);
-  //
-  // masterStudent.insert(1, *s1);
-  // masterStudent.insert(2, *s2);
-  // masterStudent.insert(3, *s3);
-  //
-  // Faculty* f1 = new Faculty(4, "Kashish Pandey", "Sophomore", "hello");
-  // Faculty* f2 = new Faculty(5, "Rachna Shetty", "Sophomore", "wassup");
-  // Faculty* f3 = new Faculty(6, "Suraj Shetty", "Sophomore", "hiii");
-  // //
-  // f1->addAdvisee(1);
-  // f1->addAdvisee(2);
-  // f3->addAdvisee(3);
-  //
-  // // f1->advisees.printList();
-  // masterFaculty.insert(4, *f1);
-  // // masterFaculty.printTree();
-  // masterFaculty.insert(5, *f2);
-  // masterFaculty.insert(6, *f3);
-  //
-
-
-}
+Database::Database(){}
 Database::~Database(){}
 
+//read from file and restore database records
 void Database::recoverDatabase(){
   int id, gpa, advisor, numAdv;
   string name, level, department, major, user;
@@ -56,7 +32,6 @@ void Database::recoverDatabase(){
 
         //ADD THE NEW FACULTY MEMBER TO THE TABLE
         Faculty *newFac = new Faculty(id, name, level, department);
-        // cout << *newFac << endl;
 
         if(numAdv == 0){
           newFac->addAdvisee(0);
@@ -71,12 +46,9 @@ void Database::recoverDatabase(){
         noFaculty = false;
       }
     }
-    catch (const ifstream::failure& e) { //catches if the program tries to read past the end of file
-      cout << "Tried to read past EOF" << endl;
-      noFaculty = true;
-    }
-    catch (const invalid_argument &e) { //catches failed casts if the file is in the wrong format
-      cout << "Error reading from Faculty Table file." << endl;
+    //catches failed casts if the file is in the wrong format
+    catch (const invalid_argument &e) {
+      cout << "\nError reading from Faculty Table file." << endl;
       noFaculty = true;
     }
 
@@ -115,16 +87,12 @@ void Database::recoverDatabase(){
         getline(studentStream, fileString); //get the advisor ID
         newStud.facultyAdvisor = stoi(fileString);
 
-        //ADD THE NEW STUDENT TO THE TABLE
+        //Add the new student to the database
         masterStudent.insert(newStud.id, newStud);
         noStudent = false;
       }
     }
-    catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
-      cout << "Tried to read past EOF" << endl;
-      noStudent = true;
-    }
-    catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
+    catch (const invalid_argument &e) { //catches failed casts if the file is in the wrong format
       cout << "Error reading from Student Table file." << endl;
       noStudent = true;
     }
@@ -180,7 +148,9 @@ void Database::printFaculty(){
   if(masterFaculty.size == 0){
     cout << "No faculty records." << endl;
   }
-}    //#2
+}
+
+//find and print student given id
 void Database::findStudent(){
   int studID;
   cout << "Enter the student ID: " << endl;
@@ -191,7 +161,8 @@ void Database::findStudent(){
   else{
     cout << "ID not found." << endl;
   }
-} //#3
+}
+//find and print faculty given id
 void Database::findFaculty(){
   int facID;
   cout << "Enter the faculty ID: " << endl;
@@ -212,10 +183,12 @@ void Database::findFaculty(){
   else{
     cout << "ID not found." << endl;
   }
-}  //#4
+}
+
+//find and print advisor of a student
 void Database::findAdvisor(){
   int studID;
-  cout << "Enter the student ID: " << endl;
+  cout << "Enter the student ID: ";
   cin >> studID;
   //checking is student is in database and then printing advisor
   if(masterStudent.contains(studID)){
@@ -225,22 +198,16 @@ void Database::findAdvisor(){
   else{
     cout << "ID not found." << endl;
   }
-}   //#5
+}
+//find and print advisees of a faculty member
 void Database::findAdvisees(){
   int facID;
-  while(true){
-    try{
-      cout << "Enter Faculty ID: ";
-      cin >> facID;
-      break;
-    }
-    catch(exception e){
-      cout << "Error. Please enter a valid integer." << endl;
-      continue;
-    }
-  }
+  cout << "Enter Faculty ID: ";
+  cin >> facID;
+  //checking if id is in database
   if(masterFaculty.contains(facID)){
-    Faculty fac = *masterFaculty.find(facID);// CHECK IF THIS WORKS
+    Faculty fac = *masterFaculty.find(facID);
+    //print advisees
     if(fac.hasAdvisee()){
       cout << "\n-----Advisees----- " << endl;
       for(int i = 0; i < fac.getNumAdvisees(); i++){
@@ -268,6 +235,11 @@ void Database::addStudent(){
       cin.ignore();
       getline(cin, userInput);
       id = stoi(userInput);
+      if(id < 0){
+        cout << "ID number cannot be negative.\n" << endl;
+        continue;
+      }
+
 
       if(masterStudent.contains(id) == true){
         cout << "The ID number you entered is already in use. Please enter another." << endl;
@@ -284,7 +256,6 @@ void Database::addStudent(){
   while(true){
     try{
       cout << "Please enter student name: ";
-      // cin.ignore();
       getline(cin, name);
       cout << "Please enter student level: ";
       getline(cin, level);
@@ -310,6 +281,7 @@ void Database::addStudent(){
   if(masterFaculty.contains(advisor) == false)
     cout << "\nThe faculty advisor you entered is not in the database. Please add them before continuing." << endl;
   else{
+    //adding student to database and updating advisor and advisee list
     Student *newStudent = new Student(id, name, level, major, gpa, advisor);
     masterStudent.insert(id, *newStudent);
     masterFaculty.find(advisor)->addAdvisee(id);
@@ -323,7 +295,8 @@ void Database::addStudent(){
   }
 }
 
-void Database::deleteStudent(){ //#8
+//delete a student record
+void Database::deleteStudent(){
     int id;
     //getting id number
     cout << "Enter Student ID to delete: ";
@@ -347,13 +320,20 @@ void Database::deleteStudent(){ //#8
     }
 }
 
-void Database::addFaculty(){ //#9
+//add a faculty record
+void Database::addFaculty(){
     int id, advisee;
     string name, level, department;
+    //getting valid id number
     while(true){
       try{
         cout << "Enter Faculty ID: ";
         cin >> id;
+
+        if(id < 0){
+          cout << "ID number cannot be negative.\n" << endl;
+          continue;
+        }
 
         if(masterFaculty.contains(id) == true){
           cout << "The ID number you entered is already in use. Please enter another." << endl;
@@ -366,6 +346,7 @@ void Database::addFaculty(){ //#9
         continue;
       }
     }
+    //getting user input for name, level, department of faculty member
     while(true){
       try{
         cout << "Please enter faculty name: ";
@@ -385,6 +366,7 @@ void Database::addFaculty(){ //#9
       }
     }
 
+    //insert faculty record to database
     Faculty *f = new Faculty(id, name, level, department);
     masterFaculty.insert(id, *f);
     cout << "\nFaculty member successfully added.\n" << endl;
@@ -396,20 +378,14 @@ void Database::addFaculty(){ //#9
     delete f;
 }
 
-void Database::deleteFaculty(){//#10
+//delete a daculty record
+void Database::deleteFaculty(){
   int id;
-  while(true){
-    try{
-      cout << "Enter Faculty ID to delete: ";
-      cin >> id;
-      break;
-    }
-    catch(exception e){
-      cout << "Error. Please enter a valid integer." << endl;
-      continue;
-    }
-  }
+  //getting faculty id
+  cout << "Enter Faculty ID to delete: ";
+  cin >> id;
 
+  //if id is not in database,
   if(!masterFaculty.contains(id)){
     cout << "\nFaculty record not found." << endl;
   }
@@ -428,6 +404,7 @@ void Database::deleteFaculty(){//#10
             int newAdvisor;
             cout << "Enter the replacement advisor for Student with ID# " << studID << ": " << endl;
             cin >> newAdvisor;
+            //add advisee to new advisor
             if(masterFaculty.contains(newAdvisor) && newAdvisor != id){
               masterFaculty.find(newAdvisor)->addAdvisee(studID);
             }
@@ -446,45 +423,40 @@ void Database::deleteFaculty(){//#10
         }
       }
     }
-
     //for rollback
     Transaction tran(10, *fac);
     transactions.push(tran);
 
+    //delete faculty record
     masterFaculty.deleter(id);
     cout << "\nFaculty member successfully deleted.\n" << endl;
   }
 }
 
-void Database::changeAdvisor()  //#11
+//change advisor of a student
+void Database::changeAdvisor()
 {
   int facID, studID;
   Faculty *newAdvisor, *prevAdvisor;
   Student *stud;
 
-  while(true){
-    try{
-      cout << "Enter Student ID: ";
-      cin >> studID;
-
-      break;
-    }
-    catch(exception e){
-      cout << "ERROR: Please enter a valid integer." << endl;
-      continue;
-    }
-  }
-
-  // id dne
+  //getting student id number
+  cout << "Enter Student ID: ";
+  cin >> studID;
+  // checking that student exists in database
   if(masterStudent.contains(studID)){
     stud = masterStudent.find(studID);
     cout << "Enter a new advisor ID: ";
     cin >> facID;
+    //if the new advisor is in the database
     if(masterFaculty.contains(facID)){
       newAdvisor = masterFaculty.find(facID);
       prevAdvisor = masterFaculty.find(stud->getAdvisor());
+
+      //deleting student from advisee list of old advisor
       prevAdvisor->deleteAdvisee(studID);
 
+      //adding student to advisee list of new advisor
       if(!newAdvisor->containsAdvisee(studID)){
         newAdvisor->addAdvisee(studID);
       }
@@ -495,6 +467,7 @@ void Database::changeAdvisor()  //#11
       Transaction tran(11, *stud, *newAdvisor);
       transactions.push(tran);
 
+      //set advisor of student to the new advisor
       stud->setAdvisor(facID);
       cout << "\nAdvisor successfully changed.\n" << endl;
     }
@@ -507,22 +480,15 @@ void Database::changeAdvisor()  //#11
 
 }
 
-void Database::removeAdvisee(){ //#12
+//removes an advisee of a faculty member
+void Database::removeAdvisee(){
     int facID, studID;
-    while(true){
-      try{
-        cout << "Enter Faculty ID: ";
-        cin >> facID;
 
-        break;
-      }
-      catch(exception e){
-        cout << "ERROR: Please enter a valid integer." << endl;
-        continue;
-      }
-    }
+    //getting faculty id
+    cout << "Enter Faculty ID: ";
+    cin >> facID;
 
-    // id dne
+    // checking that the faculty id exists in the database
     if(masterFaculty.contains(facID)){
       Faculty *fac = masterFaculty.find(facID);
       fac->advisees.printList();
@@ -541,16 +507,19 @@ void Database::removeAdvisee(){ //#12
           Student *stud = masterStudent.find(studID);
           if(stud != NULL){
             if(fac->containsAdvisee(studID)){
+
               //checking that there is an alternate advisor to advise the student
               if(masterFaculty.size != 1){
                 cout << "DELETING: " << endl;
                 fac->deleteAdvisee(studID);
-                //asking user to select new advisor for student
+
+                //asking user to select new advisor for each student advisee
                 while(true){
                   try{
                     int newAdvisor;
                     cout << "Enter the replacement advisor for Student with ID# " << studID << ": " << endl;
                     cin >> newAdvisor;
+                    //updating advisor and advisee list
                     if(masterFaculty.contains(newAdvisor)){
                       masterFaculty.find(newAdvisor)->addAdvisee(studID);
                       stud->setAdvisor(newAdvisor);
@@ -588,9 +557,12 @@ void Database::removeAdvisee(){ //#12
 
 
 }
+
+//undo function for adding/deleting faculty or student and changing advisor
 void Database::rollback(){
   bool hasTransaction = true;
   Transaction lastTrans;
+  //pop the last transaction from the stack, or stop if it's empty
   try {
     lastTrans = transactions.pop();
   }
@@ -599,6 +571,7 @@ void Database::rollback(){
     hasTransaction = false;
   }
 
+  //looking for which type of transaction to undo
   if(hasTransaction) {
     if(lastTrans.num == 7) { //undo add student
       masterStudent.deleter(lastTrans.s.id);
@@ -630,7 +603,7 @@ void Database::rollback(){
     else if(lastTrans.num == 11) { //undo change advisor
       cout << "Student advisor changed back to old advisor." << endl;
       //the Transaction obj's Student has the OLD advisor
-      //and Faculty is the NEW advisor.
+      //and Faculty is the NEW advisor
 
       //remove the advisee from the NEW advisor
       Faculty *newAdv = masterFaculty.find(lastTrans.f.id);
@@ -643,11 +616,10 @@ void Database::rollback(){
       Student *stud = masterStudent.find(lastTrans.s.id);
       stud->setAdvisor(lastTrans.s.facultyAdvisor);
     }
-
   }
 }
 
-//write the data base to a file
+//write the database to studentTable and facultyTable files
 void Database::writeToFile(){
   ofstream fout;
   fout.open("facultyTable.txt");
@@ -656,4 +628,4 @@ void Database::writeToFile(){
   fout.open("studentTable.txt");
   fout << masterStudent.getData() << endl;
   fout.close();
-}  
+}

@@ -24,9 +24,7 @@ Faculty::Faculty(int i){
 }
 
 //destructor
-Faculty::~Faculty(){
-  // delete advisees;
-}
+Faculty::~Faculty(){}
 
 int Faculty::getAdvisee(int pos){
   int temp = *advisees.getNode(pos);
@@ -52,6 +50,7 @@ int Faculty::getNumAdvisees(){
   return advisees.size;
 }
 
+//returns string with all information
 string Faculty::getInformation(){
   string temp = "";
   temp += name + "\n";

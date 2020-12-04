@@ -16,20 +16,20 @@ class Database{
 
     void recoverDatabase();
     void showMenu();
-    void printStudents();  //#1
-    void printFaculty();    //#2
-    void findStudent(); //#3
-    void findFaculty();  //#4
-    void findAdvisor();   //#5
-    void findAdvisees();   //#6
-    void addStudent();   //#6
-    void deleteStudent();   //#6
-    void addFaculty();   //#6
-    void deleteFaculty();   //#6
-    void changeAdvisor();   //#6
-    void removeAdvisee();   //#6
-    void rollback();   //#6
-    void writeToFile();   //#6
+    void printStudents();  
+    void printFaculty();
+    void findStudent();
+    void findFaculty();
+    void findAdvisor();
+    void findAdvisees();
+    void addStudent();
+    void deleteStudent();
+    void addFaculty();
+    void deleteFaculty();
+    void changeAdvisor();
+    void removeAdvisee();
+    void rollback();
+    void writeToFile();
 
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
