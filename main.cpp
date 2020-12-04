@@ -77,14 +77,18 @@ int main(){
     else if(choice == 13){
       db.rollback();
     }
-    //write database to a file before exiting
+    //clear database
     else if(choice == 14){
+      db.clearDatabase();
+    }
+    //write database to a file before exiting
+    else if(choice == 15){
       db.writeToFile();
       break;
     }
-    //user entered a number outside of 1-14
+    //user entered a number outside of 1-15
     else{
-      cout << "Please enter a number between 1-14." << endl;
+      cout << "Please enter a number between 1-15." << endl;
     }
 
     //waiting for user to press enter to show menu again

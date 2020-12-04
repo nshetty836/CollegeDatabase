@@ -127,7 +127,9 @@ void Database::showMenu(){
   cout << "11. Change a student’s advisor" << endl;
   cout << "12. Remove an advisee from a faculty member" << endl;
   cout << "13. Rollback" << endl;
-  cout << "14. Exit" << endl;
+  cout << "14. Clear Database" << endl;
+  cout << "15. Exit" << endl;
+
 }
 
 //print all student info in ascending order
@@ -615,6 +617,26 @@ void Database::rollback(){
       //change the student's advisor ID.
       Student *stud = masterStudent.find(lastTrans.s.id);
       stud->setAdvisor(lastTrans.s.facultyAdvisor);
+    }
+  }
+}
+
+void Database::clearDatabase(){
+  while(true){
+    cout << "Are you sure you would like to clear the database? This action cannot be undone." << endl;
+    cout << "1: Yes\n2: No" << endl;
+    cout << "Enter a number: " << endl;
+    int userChoice;
+    cin >> userChoice;
+    if(userChoice == 1){
+      masterFaculty.destroyRecursive(masterFaculty.root);
+      masterStudent.destroyRecursive(masterStudent.root);
+      cout << "Database cleared" << endl;
+      break;
+    }
+    else if(userChoice == 2){}
+    else{
+      cout << "Invalid input." << endl;
     }
   }
 }

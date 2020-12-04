@@ -16,7 +16,7 @@ class Database{
 
     void recoverDatabase();
     void showMenu();
-    void printStudents();  
+    void printStudents();
     void printFaculty();
     void findStudent();
     void findFaculty();
@@ -29,6 +29,7 @@ class Database{
     void changeAdvisor();
     void removeAdvisee();
     void rollback();
+    void clearDatabase();
     void writeToFile();
 
     BST<Student> masterStudent;
