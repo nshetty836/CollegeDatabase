@@ -72,9 +72,7 @@ DoublyLinkedList<T>::DoublyLinkedList(){
 }
 
 template <class T>
-DoublyLinkedList<T>::~DoublyLinkedList(){
-  //RESEARCH in ZYBOOKS
-}
+DoublyLinkedList<T>::~DoublyLinkedList(){}
 
 //inserts node at front of list
 template <class T>
