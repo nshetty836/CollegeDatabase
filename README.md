@@ -17,3 +17,7 @@ How this program compiles:
 
 
 References:
+https://www.cs.fsu.edu/~myers/c++/notes/pointers1.html
+https://stackoverflow.com/questions/19390059/program-skips-second-cin
+https://www.geeksforgeeks.org/add-greater-values-every-node-given-bst/
+https://stackoverflow.com/questions/23187466/how-can-i-convert-a-double-to-two-decimal-places
