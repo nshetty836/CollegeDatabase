@@ -2,6 +2,7 @@
 #define BST_H
 #include <iostream>
 #include <cstddef>
+#include <algorithm>
 using namespace std;
 
 template <class T>
@@ -57,15 +58,26 @@ public:
   T* getMin();
   void recPrint(TreeNode<T> *node); //recursive print, takes a node so we can print any part of the tree
   void printTree();
+  void recMajor(TreeNode<T> *node, string major);
+  bool printByMajor(string major);
   void recData(TreeNode<T>* node, string *temp);
   string getData();
-  // T* randomNode();
+
   //returns the sucessor of the node to be deleted, d
   TreeNode<T>* getSuccessor(TreeNode<T> *d);
   int getNext(int value, T k);
   void copyTree(TreeNode<T>* node);
   int size;
+  bool hasMajor = false;
   TreeNode<T> *root;
+
+  //used in findByMajor() function
+  string makeLower(const string& in)
+  {
+    string out;
+    transform( in.begin(), in.end(), back_inserter(out), ::tolower );
+    return out;
+  }
 };
 
 template <class T>
@@ -112,6 +124,27 @@ void BST<T>::recPrint(TreeNode<T> *node){
 template <class T>
 void BST<T>::printTree(){
   recPrint(root);
+}
+
+//prints student records if they have the given major
+template <class T>
+void BST<T>::recMajor(TreeNode<T> *node, string major){
+  if(node == NULL)
+    return;
+
+  recMajor(node->left, major);
+  if(makeLower(node->data.major) == major){
+    cout << node->data << endl;
+    hasMajor = true;
+  }
+  recMajor(node->right, major);
+}
+
+//prints all students of given major
+template <class T>
+bool BST<T>::printByMajor(const string major){
+  recMajor(root, major);
+  return hasMajor;
 }
 
 template <class T>

@@ -4,6 +4,7 @@
 #include "BST.h"
 #include "Stack.h"
 #include "Transaction.h"
+#include <algorithm>
 #include <fstream>
 
 using namespace std;
@@ -29,12 +30,21 @@ class Database{
     void changeAdvisor();
     void removeAdvisee();
     void rollback();
+    void findByMajor();
     void clearDatabase();
     void writeToFile();
 
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
     Stack<Transaction> transactions;
+
+    //used in findByMajor() function
+    string makeLower(const string& in)
+    {
+      string out;
+      transform( in.begin(), in.end(), back_inserter(out), ::tolower );
+      return out;
+    }
 
 
 };

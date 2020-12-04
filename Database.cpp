@@ -127,8 +127,9 @@ void Database::showMenu(){
   cout << "11. Change a student’s advisor" << endl;
   cout << "12. Remove an advisee from a faculty member" << endl;
   cout << "13. Rollback" << endl;
-  cout << "14. Clear Database" << endl;
-  cout << "15. Exit" << endl;
+  cout << "14. Find and print all student information for a certain major" << endl;
+  cout << "15. Clear Database" << endl;
+  cout << "16. Exit" << endl;
 
 }
 
@@ -621,6 +622,22 @@ void Database::rollback(){
   }
 }
 
+//prints student information given a major
+void Database::findByMajor(){
+  string major;
+  cout << "Enter the major you would like to print student records for: " << endl;
+  cin.ignore();
+  getline(cin, major);
+  major = makeLower(major);
+
+  //prints all students with that major
+  cout << "All " << major << " majors\n-------------------------" << endl;
+  bool hasMajor = masterStudent.printByMajor(major);
+  if(hasMajor == false){
+    cout << "No student records with this major." << endl;
+  }
+}
+
 void Database::clearDatabase(){
   while(true){
     cout << "Are you sure you would like to clear the database? This action cannot be undone." << endl;
@@ -631,10 +648,13 @@ void Database::clearDatabase(){
     if(userChoice == 1){
       masterFaculty.destroyRecursive(masterFaculty.root);
       masterStudent.destroyRecursive(masterStudent.root);
-      cout << "Database cleared" << endl;
+      cout << "Database cleared." << endl;
       break;
     }
-    else if(userChoice == 2){}
+    else if(userChoice == 2){
+      cout << "Database not cleared." << endl;
+      break;
+    }
     else{
       cout << "Invalid input." << endl;
     }

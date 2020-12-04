@@ -77,18 +77,22 @@ int main(){
     else if(choice == 13){
       db.rollback();
     }
-    //clear database
+    //prints all students' information for a given major
     else if(choice == 14){
+      db.findByMajor();
+    }
+    //clear database
+    else if(choice == 15){
       db.clearDatabase();
     }
     //write database to a file before exiting
-    else if(choice == 15){
+    else if(choice == 16){
       db.writeToFile();
       break;
     }
-    //user entered a number outside of 1-15
+    //user entered a number outside of 1-16
     else{
-      cout << "Please enter a number between 1-15." << endl;
+      cout << "Please enter a number between 1-16." << endl;
     }
 
     //waiting for user to press enter to show menu again
